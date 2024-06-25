@@ -1,3 +1,3 @@
-export * from "./constans";
+export * from "./constants";
 export * from "./TextEditor";
 export * from "./types";

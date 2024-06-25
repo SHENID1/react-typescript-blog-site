@@ -1,18 +1,15 @@
-import React, {FC, memo, useState} from 'react';
-import {Editor, EditorState} from 'draft-js';
-import 'draft-js/dist/Draft.css';
+import type { FC } from "react";
+import {TextEditor} from "./TextEditor"
 
-
-
-const MyEditor: FC = () => {
-    const [editorState, setEditorState] = useState(() =>
-        EditorState.createEmpty(),
-    );
-
+const a = `<p><span class="highlight">какрй иа иукахкщаркуфзшщрщшжуэква</span></p><h2><span class="highlight"><strong>11111111111111111</strong></span></h2><ol type="1"><li><strong>посрать</strong></li><li><strong>поссать</strong></li><li><strong>пожрать</strong></li><li><strong>попить</strong></li><li><strong>спать</strong></li></ol><p></p>`;
+export const TextEditorPage: FC = () => {
     return (
-        <>
-            <Editor editorState={editorState} onChange={setEditorState}/>
-        </>
+        <section>
+            <TextEditor
+                title="Text editor"
+                onChangeHTMLText={(value: string) => console.log(value)}
+                htmlText={a}
+            />
+        </section>
     );
-}
-export default memo(MyEditor);
+};

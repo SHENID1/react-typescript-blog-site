@@ -1,13 +1,13 @@
 import React from 'react';
-import MyEditor from "./components/test";
-import TextEditor from "./components/TextEditor/TextEditor";
+import {TextEditorPage} from "./components/test";
+
 
 function App() {
-  return (
-    <div>
-      <TextEditor/>
-    </div>
-  );
+    return (
+        <div>
+            <TextEditorPage/>
+        </div>
+    );
 }
 
 export default App;

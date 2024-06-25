@@ -1,17 +1,32 @@
-import {EditorState} from "draft-js";
-
-export type TTextEditorTextStyle = | "H1" | "H2" | "OL" | "UL" | "BOLD" | "UNDERLINE" | "HIGHLIGHT";
-export type TClsses = {
-    textEditor?: string;
-}
-export type TypeEditorState = typeof EditorState
-
-
-export interface TProps {
-    isInvalid?: boolean;
-    classes?: TClsses;
-    htmlText?: string | undefined;
-    onChangeHTMLText?: (value: string) => void;
-    placeholder?: string;
-    title?: string;
-}
+export type TTextEditorTextStyle = "H1" | "H2" | "OL" | "UL" | "BOLD" | "UNDERLINE" | "HIGHLIGHT";
+export type IconType =
+    | "ArrowDown"
+    | "ArrowLeft"
+    | "ArrowRight"
+    | "Bold"
+    | "Calendar"
+    | "Center"
+    | "Checkbox"
+    | "Close"
+    | "Copy"
+    | "DarkMode"
+    | "Edit"
+    | "Highlight"
+    | "Home"
+    | "H2"
+    | "LightMode"
+    | "Minus"
+    | "OL"
+    | "Plus"
+    | "Search"
+    | "Settings"
+    | "Sorting"
+    | "SortDown"
+    | "SortUp"
+    | "Spinner"
+    | "Success"
+    | "Telegram"
+    | "UL"
+    | "Underline"
+    | "Visibility"
+    | "VisibilityOff";

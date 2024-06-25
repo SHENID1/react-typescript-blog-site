@@ -1,0 +1,64 @@
+.TextEditor {
+  position: relative;
+  box-sizing: border-box;
+}
+.TextEditor h1, .TextEditor h2 {
+  margin: revert !important;
+}
+.TextEditor h1 {
+  line-height: 36px;
+}
+.TextEditor h2 {
+  line-height: 24px;
+}
+.TextEditor ol, .TextEditor ul {
+  margin: 0 0 10px 25px;
+}
+.TextEditor-Wrapper {
+  padding: 16px;
+}
+.TextEditor .DraftEditor-root .public-DraftEditorPlaceholder-root {
+  color: #B0976AFF;
+  opacity: 0.5;
+}
+.TextEditor .DraftEditor-root .public-DraftStyleDefault-orderedListItem, .TextEditor .DraftEditor-root .public-DraftStyleDefault-unorderedListItem {
+  position: unset;
+}
+.TextEditor .DraftEditor-root .public-DraftStyleDefault-orderedListItem {
+  list-style-type: unset;
+}
+.TextEditor .DraftEditor-root .public-DraftStyleDefault-orderedListItem::before {
+  display: none;
+}
+.TextEditor .DraftEditor-editorContainer {
+  height: 222px;
+  color: inherit;
+  overflow-y: scroll;
+}
+.TextEditor-Title {
+  opacity: 0.5;
+  color: #B0976AFF;
+  margin-bottom: 4px;
+}
+.TextEditor-Area {
+  box-sizing: border-box;
+  border-radius: 8px;
+  border: 1px solid #F5F5F6FF;
+}
+.TextEditor-Area__isFocused {
+  border: 1px solid #B0976AFF;
+}
+.TextEditor-Area__isInvalid {
+  border: 1px solid #E31235FF;
+}
+.TextEditor-Sub {
+  display: flex;
+  gap: 8px;
+  box-sizing: border-box;
+  padding: 16px;
+  border-top: 1px solid #F5F5F6FF;
+  color: #B0976AFF;
+}
+.TextEditor-Wrapper__hidePlaceholder .public-DraftEditorPlaceholder-root {
+  display: none;
+}
