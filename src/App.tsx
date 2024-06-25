@@ -1,10 +1,11 @@
 import React from 'react';
 import MyEditor from "./components/test";
+import TextEditor from "./components/TextEditor/TextEditor";
 
 function App() {
   return (
     <div>
-      <MyEditor/>
+      <TextEditor/>
     </div>
   );
 }
