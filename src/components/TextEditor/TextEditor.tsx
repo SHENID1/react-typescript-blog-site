@@ -104,7 +104,7 @@ const TextEditorComponent: FC<TProps> = ({
 
     return (
         <div className={clsx("TextEditor", classes?.textEditor)}>
-            <div className="TextEditor-Title">{title}</div>
+            {/*<div className="TextEditor-Title">{title}</div>*/}
             <div
                 className={clsx("TextEditor-Area", {
                     "TextEditor-Area__isFocused": isFocused || contentState.hasText(),

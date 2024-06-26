@@ -29,6 +29,7 @@ export const TEXT_EDITOR_CUSTOM_STYLES = {
 };
 
 export const TEXT_EDITOR_BLOCK_TYPES = [
+  { label: "H1", style: "header-one", icon: "H1", size: "extra-small" },
   { label: "H2", style: "header-two", icon: "H2", size: "extra-small" },
   { label: "OL", style: "ordered-list-item", icon: "OL", size: "medium" },
   { label: "UL", style: "unordered-list-item", icon: "UL", size: "medium" },
