@@ -5,4 +5,5 @@ export default interface IAuth {
     user?: IUser;
     isAuth: boolean;
     isLoading: boolean;
+    errors: string;
 }

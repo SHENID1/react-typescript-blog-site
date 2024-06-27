@@ -90,7 +90,7 @@ const MyLayout = () => {
                               mode="inline"
                               defaultSelectedKeys={["1"]}
                               items={NavOption}
-                              style={{borderRadius: "5px", width: "180px"}}
+                              style={{borderRadius: "5px", width: "100%"}}
                               className={cl.menuVertical}
                         />
                         </Drawer>

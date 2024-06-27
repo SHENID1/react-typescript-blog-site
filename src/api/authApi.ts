@@ -7,12 +7,15 @@ interface LoginResponse {
     user: IUser;
     token: string;
 }
-class AuthApi {
+export default class AuthApi {
     static async login(arg: loginArgs) {
-        $api.post<LoginResponse>('auth/login', arg).then((response) => {
-            response.data
-        }).catch((error) => {
-
-        })
+        try {
+            const res = await $api.post<LoginResponse>('auth/login', arg)
+            return res.data
+        }
+        catch (e) {
+            console.log(e);
+            return null
+        }
     }
 }

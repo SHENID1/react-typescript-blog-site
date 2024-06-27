@@ -28,7 +28,7 @@ export const login = createAsyncThunk(
         try {
             const response = await $api.post<LoginResponse>(
                 LoginUrl,
-                {username: _.username,password: _.password},
+                // {username: _.username,password: _.password},
                 )
             return response.data;
         } catch (e) {
