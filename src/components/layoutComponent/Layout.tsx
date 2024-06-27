@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link, Outlet} from "react-router-dom";
-import {Layout, Menu, ConfigProvider, Drawer, Button, Space} from "antd";
+import {Layout, Menu, ConfigProvider, Drawer, Space} from "antd";
 import {EllipsisOutlined, JavaScriptOutlined, MenuOutlined} from "@ant-design/icons";
 import Footer from "../FooterComponent/Footer";
 import cl from "./style.module.css";
@@ -49,6 +49,9 @@ const MyLayout = () => {
                     Layout: {
                         headerBg: "#38876e",
                         headerPadding: 0,
+                    },
+                    Drawer: {
+                        colorBgElevated: "#2b6554",
                     }
                 },
             }}
@@ -74,14 +77,23 @@ const MyLayout = () => {
                         />
                         <MenuOutlined onClick={handleOpenBurgerMenu} className={cl.MenuOutlined}/>
                         <Drawer open={open}
-                                size={"large"}
+                                size={"default"}
                                 placement={"left"}
                                 onClose={onClose}
                                 extra={
                                     <Space>
                                         Все Закупки
                                     </Space>}
+                        >
+
+                            <Menu theme="light"
+                              mode="inline"
+                              defaultSelectedKeys={["1"]}
+                              items={NavOption}
+                              style={{borderRadius: "5px", width: "180px"}}
+                              className={cl.menuVertical}
                         />
+                        </Drawer>
                     </div>
                 </Layout.Header>
                 <Outlet/>
