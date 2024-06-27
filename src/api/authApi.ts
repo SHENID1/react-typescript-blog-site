@@ -14,7 +14,6 @@ export default class AuthApi {
             return res.data
         }
         catch (e) {
-            console.log(e);
             return null
         }
     }

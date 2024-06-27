@@ -6,7 +6,8 @@ export const ApiUrl = window.location.origin.slice(0, -5) + ":5000";
 
 const $api = axios.create({
     withCredentials: true,
-    baseURL: ApiUrl
+    baseURL: ApiUrl,
+
 })
 
 
