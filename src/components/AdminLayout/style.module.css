@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap');
+
+.name {
+    font-family: "Roboto Slab", serif;
+    font-optical-sizing: auto;
+    font-weight: 800;
+    font-style: normal;
+    font-size: 30px;
+    margin-right: 30px;
+    color: white;
+}
+
+.cont {
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+}
+.logo {
+    font-size: 35px;
+    color: white;
+
+}
+.logoCont {
+    background-color: rgba(14,46,33,0.74);
+    border-radius: 15px;
+    margin-right: 10px;
+    width: 64px;
+    height: 64px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.cw {
+    color: #ffffff;
+}
+.cw:hover {
+    color: white;
+}
+.cw:active {
+    color: white;
+}
+.cb {
+    color: #000000;
+}
+.mainL {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100vh;
+    height: max-content;
+}
+.menuHorizontal {
+
+}
+.menuVertical {
+    display: none;
+}
+.MenuOutlined {
+    font-size: 35px;
+    color: white;
+    transition: all ease 0.7s;
+}
+.MenuOutlined:hover {
+    opacity: 0.5;
+}
+.burgerMenu {
+    display: none;
+}
+@media (min-width: 956px) {
+    .MenuOutlined {
+        display: none;
+    }
+}
+@media (max-width: 955px) {
+    .menuHorizontal {
+        display: none;
+    }
+    .menuVertical {
+        display: block;
+    }
+    .cont {
+        justify-content: space-between;
+    }
+
+}
+@media (max-width: 470px) {
+    .logoCont {
+        display: none;
+    }
+}
+@media (max-width: 300px) {
+    .name {
+        display: none;
+    }
+    .cont{
+        justify-content: flex-end;
+        align-items: center;
+        display: flex;
+        height: 64px;
+    }
+}
