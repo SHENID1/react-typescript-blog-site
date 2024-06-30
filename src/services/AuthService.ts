@@ -1,27 +1,33 @@
-import {createApi, FetchArgs, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
-import IUser from "../models/IUser";
 import loginArgs from "../models/loginArgs";
+import {ActionCreatorWithoutPayload, ActionCreatorWithPayload, ThunkDispatch} from "@reduxjs/toolkit";
+import AuthApi from "../api/authApi";
+import LoginResponse from "../models/loginResponse";
 
-interface LoginResponse {
-    message: string;
-    user: IUser;
-    token: string;
+export default class AuthService {
+    static async login(payload: loginArgs, dispatch: ThunkDispatch<any, any, any>, successLogin: ActionCreatorWithPayload<LoginResponse>) {
+        const res = await AuthApi.login(payload);
+        if (res !== null) {
+            if (!payload.remember) {
+                localStorage.setItem('remember', String(0));
+            }
+            if (payload.remember) {
+                localStorage.removeItem('remember');
+            }
+            localStorage.setItem("token", res.accessToken)
+            dispatch(successLogin(res))
+        } else {
+            return "Неверный логин или пароль"
+        }
+    }
+    static async logout_handler(dispatch: ThunkDispatch<any, any, any>, logout: ActionCreatorWithoutPayload) {
+        const res = await AuthApi.logout();
+        if (res !== null) {
+            localStorage.removeItem('token');
+            dispatch(logout());
+        } else {
+            return ""
+        }
+    }
+
+
 }
-
-
-export const authAPI = createApi({
-    reducerPath: 'authAPI',
-    baseQuery: fetchBaseQuery({baseUrl: 'http://localhost:5000'}),
-    tagTypes: ['Auth'],
-    endpoints: (build) => ({
-        login: build.query<LoginResponse, loginArgs>({
-            query: (args: loginArgs) => ({
-                url: `/auth/login`,
-                method: 'POST',
-                mode: "no-cors",
-                body: args
-            }),
-            providesTags: result => ['Auth']
-        }),
-    })
-})

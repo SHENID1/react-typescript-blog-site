@@ -1,0 +1,12 @@
+.loadScreen {
+    background-color: grey;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items:center;
+    font-size: larger;
+    color: white;
+    font-weight: bold;
+
+}

@@ -66,13 +66,33 @@
 .burgerMenu {
     display: none;
 }
+.user {
+    height: 100%;
+    width: max-content;
+    margin-left: 30px;
+    color: white;
+}
+.sp {
+
+}
+.btn {
+    margin-left: 20px;
+}
 @media (min-width: 956px) {
     .MenuOutlined {
         display: none;
     }
 }
+@media (max-width: 1124px) {
+    .sp {
+        display: none;
+    }
+}
 @media (max-width: 955px) {
     .menuHorizontal {
+        display: none;
+    }
+    .user {
         display: none;
     }
     .menuVertical {

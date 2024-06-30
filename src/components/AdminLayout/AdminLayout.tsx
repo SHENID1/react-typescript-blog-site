@@ -1,25 +1,17 @@
 import React from 'react';
 import {Link, Outlet} from "react-router-dom";
-import {Layout, Menu, ConfigProvider, Drawer, Space} from "antd";
-import {EllipsisOutlined, JavaScriptOutlined, MenuOutlined} from "@ant-design/icons";
+import {Layout, Menu, ConfigProvider, Drawer, Space, Button} from "antd";
+import {JavaScriptOutlined, MenuOutlined} from "@ant-design/icons";
 import Footer from "../FooterComponent/Footer";
 import cl from "./style.module.css";
+import {useAppDispatch, useAppSelector} from "../../hooks/redux";
+import AuthService from "../../services/AuthService";
+import {userSlice} from "../../store/reducers/UserSlice";
 
 
 const NavOption = [
     {key: "1", label: (<Link to="/">Главная</Link>)},
-    {key: "2", label: (<Link to="postd" className={cl.cw}>Статьи</Link>), children: [{
-                type: 'group',
-            label: <span className={cl.cw}>Категории:</span>,
-                children: [
-                    { label: <Link to="postd" className={cl.cb}>Новости</Link>, key: 'setting:1' },
-                    { label: <Link to="postd" className={cl.cb}>что то еще</Link>, key: 'setting:2' },
-                    { label: <Link to="postd" className={cl.cb}>тема 3</Link>, key: 'setting:3' },
-                    { label: <Link to="postd" className={cl.cb}>тема 4</Link>, key: 'setting:4' },
-                    { label: <Link to="postd" className={cl.cb}>тема 5</Link>, key: 'setting:5' },
-                    // eslint-disable-next-line react/jsx-no-undef
-                    { label: <Link to="postd" className={cl.cb}>Еще...</Link>, key: 'setting:6', icon:<EllipsisOutlined /> },
-                ],},],},
+    {key: "2", label: (<Link to="postd" className={cl.cw}>Статьи</Link>)},
     {key: "3", label: (<Link to="contacts">Контакты</Link>)},
     {key: "4", label: (<Link to="self">О себе</Link>)},
     {key: "5", label: (<Link to="subscribe">Подписка на новости</Link>)},
@@ -28,9 +20,15 @@ const NavOption = [
 
 const AdminLayout: React.FC = () => {
     const [open, setOpen] = React.useState<boolean>(false);
-
+    const {user} = useAppSelector(state => state.authReducer)
+    const dispatch = useAppDispatch()
+    const {logout} = userSlice.actions;
     const handleOpenBurgerMenu = () => setOpen(!open);
     const onClose = () => setOpen(false);
+    const logout_handler = () => {
+        AuthService.logout_handler(dispatch, logout).then()
+    }
+
 
     return (
         <ConfigProvider
@@ -52,11 +50,14 @@ const AdminLayout: React.FC = () => {
                     },
                     Drawer: {
                         colorBgElevated: "#2b6554",
-                    }
+                    },
+                    Button: {
+                        defaultHoverBorderColor: "rgb(23,246,195)",
+                        defaultHoverColor: "rgb(0,45,38)",
+                    },
                 },
             }}
         >
-
 
             <Layout className={cl.mainL}>
                 <Layout.Header>
@@ -82,7 +83,8 @@ const AdminLayout: React.FC = () => {
                                 onClose={onClose}
                                 extra={
                                     <Space>
-                                        Все Закупки
+                                        <span>{user?.username}</span>
+                                        <Button onClick={logout_handler} className={cl.btn}>Выйти</Button>
                                     </Space>}
                         >
 
@@ -94,6 +96,10 @@ const AdminLayout: React.FC = () => {
                               className={cl.menuVertical}
                         />
                         </Drawer>
+                        <div className={cl.user}>
+                            <span className={cl.sp}>Добро пожаловать, {user?.username}</span>
+                            <Button onClick={logout_handler} className={cl.btn}>Выйти</Button>
+                        </div>
                     </div>
                 </Layout.Header>
                 <Outlet/>

@@ -1,32 +1,28 @@
-import IUser from "../../models/IUser";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {login} from "./ActionCreators";
 import IAuth from "../../models/IAuth";
+import LoginResponse from "../../models/loginResponse";
 
 const initialState: IAuth = {
     isAuth: false,
-    isLoading: false,
-    errors: "",
+    loading: true,
 }
-interface LoginResponse {
-    message: string;
-    user: IUser;
-    token: string;
-}
+
 export const userSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
         successLogin(state:IAuth, action: PayloadAction<LoginResponse>) {
-            console.log(action.payload);
-            state.isLoading = false;
             state.isAuth = true
             state.user = action.payload.user
-            state.token = action.payload.token
-
+            state.loading = false
+        },
+        logout(state: IAuth) {
+            state.isAuth = false;
+            state.user = undefined;
+            state.loading = false
         }
     },
-    extraReducers: (builder) => {
+    extraReducers: () => {
     //     builder.addCase(login.pending.type, (state: IAuth) => {
     //         state.isLoading = true;
     //     });

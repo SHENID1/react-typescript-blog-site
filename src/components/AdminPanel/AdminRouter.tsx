@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Route, Routes} from "react-router-dom";
 import Page404 from "../Page404/Page404";
 import AdminLayout from "../AdminLayout/AdminLayout";
@@ -7,53 +7,68 @@ import {useAppDispatch, useAppSelector} from "../../hooks/redux";
 import {userSlice} from "../../store/reducers/UserSlice";
 import loginArgs from "../../models/loginArgs";
 import AuthApi from "../../api/authApi";
-import {message} from "antd";
 import LoginFormComponent from "../AuthPage/LoginFormComponent";
+import cl from "./style.module.css"
+import AuthService from "../../services/AuthService";
+import Page403Component from "../Page403/Page403Component";
 
 const AdminRouter: React.FC = () => {
     const dispatch = useAppDispatch()
-    const {isAuth, user} = useAppSelector(state => state.authReducer)
-    const {successLogin} = userSlice.actions;
+    const {isAuth, loading, user,} = useAppSelector(state => state.authReducer)
+    const {successLogin, logout} = userSlice.actions;
 
-    async function ll(payload: loginArgs) {
-        const res = await AuthApi.login(payload);
-        if (res !== null) {
-            localStorage.setItem("token", res.token)
+
+    const ll = async (args: loginArgs) => {
+        return await AuthService.login(args, dispatch, successLogin)
+    }
+
+    const handleLogin = (args: loginArgs) => {
+        ll(args).then()
+    }
+
+    const checkAuth = React.useCallback(() => {
+        AuthApi.checkAuth().then((res) => {
+            localStorage.setItem("token", res.accessToken);
             dispatch(successLogin(res))
-        } else {
-            return "Неверный логин или пароль"
+        }).catch(() => {
+            AuthService.logout_handler(dispatch, logout).then()
+            localStorage.removeItem('remember')
+            return <LoginFormComponent onFinish={handleLogin}/>
+        })
+        // eslint-disable-next-line
+    }, []);
+
+
+    useEffect(() => {
+        if (localStorage.getItem('token')) {
+            checkAuth()
+        }
+    }, [checkAuth])
+
+
+    if (localStorage.getItem('remember') !== null) {
+        const n: number = Number(localStorage.getItem('remember'))
+        localStorage.setItem('remember', (n + 1).toString())
+        if (n >= 2) {
+            AuthService.logout_handler(dispatch, logout).then()
+            localStorage.removeItem('remember')
+            return <LoginFormComponent onFinish={handleLogin}/>
         }
     }
-
-
-    const [messageApi, contextHolder] = message.useMessage();
-    const viewError = (error: string) => {
-        messageApi.open({
-            type: 'error',
-            content: error,
-        }).then();
-    };
-    const success = (st: string) => {
-        messageApi.open({
-            type: 'success',
-            content: st,
-        });
-    };
-    const handleLogin = (args: loginArgs) => {
-        ll(args).then((callback) => {
-            if (callback) viewError(callback);
-            else success(`Добро Пожаловать, ${args.username}`);
-        })
+    if (loading && localStorage.getItem("token")) {
+        return <div className={cl.loadScreen}>
+            <h1>Подождите...</h1>
+        </div>
     }
-
     if (!isAuth) return <>
         <LoginFormComponent onFinish={handleLogin}/>
-        {contextHolder}
     </>
+
+    if (!user?.roles.includes("ADMIN")) return <Page403Component/>
 
 
     return (
-         <Routes>
+        <Routes>
             <Route path="/" element={<AdminLayout/>}>
                 <Route index element={<MainAdmin/>}/>
                 <Route path={"*"} element={<Page404/>}/>
