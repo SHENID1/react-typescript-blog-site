@@ -1,0 +1,20 @@
+.cont {
+    height: 100%;
+    width: 100%;
+}
+.item {
+    width: 300px;
+    min-width: max-content;
+    padding: 10px;
+    height: 50px;
+    border-radius: 20px;
+    border: 1px solid black;
+    font-size: 20px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.mr {
+    margin-right: 10px;
+}

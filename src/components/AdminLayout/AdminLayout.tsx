@@ -12,9 +12,10 @@ import {userSlice} from "../../store/reducers/UserSlice";
 const NavOption = [
     {key: "1", label: (<Link to="/">Главная</Link>)},
     {key: "2", label: (<Link to="postd" className={cl.cw}>Статьи</Link>)},
-    {key: "3", label: (<Link to="contacts">Контакты</Link>)},
-    {key: "4", label: (<Link to="self">О себе</Link>)},
-    {key: "5", label: (<Link to="subscribe">Подписка на новости</Link>)},
+    {key: "3", label: (<Link to="categories" className={cl.cw}>Категории</Link>)},
+    // {key: "4", label: (<Link to="contacts">Контакты</Link>)},
+    // {key: "5", label: (<Link to="self">О себе</Link>)},
+    // {key: "6", label: (<Link to="subscribe">Подписка на новости</Link>)},
     // {key: 5, label: (<Link to="event">События</Link>)},
 ]
 
@@ -73,7 +74,7 @@ const AdminLayout: React.FC = () => {
                               mode="horizontal"
                               defaultSelectedKeys={["1"]}
                               items={NavOption}
-                              style={{borderRadius: "5px", width: "500px"}}
+                              style={{borderRadius: "5px", width: "257px"}}
                               className={cl.menuHorizontal}
                         />
                         <MenuOutlined onClick={handleOpenBurgerMenu} className={cl.MenuOutlined}/>
@@ -102,7 +103,10 @@ const AdminLayout: React.FC = () => {
                         </div>
                     </div>
                 </Layout.Header>
-                <Outlet/>
+                <div className={cl.outlet}>
+                    <Outlet/>
+                </div>
+
                 <Footer/>
             </Layout>
         </ConfigProvider>

@@ -49,6 +49,11 @@
     min-height: 100vh;
     height: max-content;
 }
+.outlet {
+    width: 100%;
+    min-height: 100vh;
+    padding: 30px;
+}
 .menuHorizontal {
 
 }
@@ -107,6 +112,9 @@
     .logoCont {
         display: none;
     }
+    .outlet {
+        padding: 15px;
+    }
 }
 @media (max-width: 300px) {
     .name {
@@ -118,4 +126,5 @@
         display: flex;
         height: 64px;
     }
+
 }

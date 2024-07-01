@@ -1,4 +1,4 @@
 export default interface Categories {
     name: string;
-    id: string;
+    _id: string;
 }
