@@ -10,8 +10,9 @@ const MainAdmin = () => {
 
     return (
         <div>
-            text<br/>
-            {user?.username}
+            <h1>Главная</h1><br/>
+            Ваше имя: {user?.username}<br/>
+            Ваши роли: {user?.roles.join(", ")}.<br/>
         </div>
     );
 };

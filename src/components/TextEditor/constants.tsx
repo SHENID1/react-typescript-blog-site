@@ -1,10 +1,19 @@
 import type { TTextEditorTextStyle } from "./types";
+import {
+  BoldOutlined,
+  HighlightOutlined, ItalicOutlined,
+  OrderedListOutlined,
+  UnderlineOutlined,
+  UnorderedListOutlined
+} from "@ant-design/icons";
 
 export const TEXT_EDITOR_STYLE_TO_HTML = (style: TTextEditorTextStyle) => {
   switch (style) {
     case "H1":
+        // eslint-disable-next-line
       return <h1 />;
     case "H2":
+      // eslint-disable-next-line
       return <h2 />;
     case "OL":
       return <ol />;
@@ -23,20 +32,21 @@ export const TEXT_EDITOR_STYLE_TO_HTML = (style: TTextEditorTextStyle) => {
 
 export const TEXT_EDITOR_CUSTOM_STYLES = {
   HIGHLIGHT: {
-    backgroundColor: "#8fcbe5",
+    backgroundColor: "#ff0000",
     color: "#fff",
   },
 };
 
 export const TEXT_EDITOR_BLOCK_TYPES = [
-  { label: "H1", style: "header-one", icon: "H1", size: "extra-small" },
-  { label: "H2", style: "header-two", icon: "H2", size: "extra-small" },
-  { label: "OL", style: "ordered-list-item", icon: "OL", size: "medium" },
-  { label: "UL", style: "unordered-list-item", icon: "UL", size: "medium" },
+  { label: "H1", style: "header-one", icon: "Заголовок", size: "extra-small" },
+  { label: "H2", style: "header-two", icon: "Подзаголовок", size: "extra-small" },
+  { label: "OL", style: "ordered-list-item", icon: <OrderedListOutlined />, size: "medium" },
+  { label: "UL", style: "unordered-list-item", icon: <UnorderedListOutlined />, size: "medium" },
 ];
 
 export const TEXT_EDITOR_INLINE_STYLES = [
-  { label: "Bold", style: "BOLD", icon: "Bold", size: "extra-small" },
-  { label: "Underline", style: "UNDERLINE", icon: "Underline", size: "extra-small" },
-  { label: "Highlight", style: "HIGHLIGHT", icon: "Highlight", size: "small" },
+  { label: "Bold", style: "BOLD", icon: <BoldOutlined />, size: "extra-small" },
+  { label: "Underline", style: "UNDERLINE", icon: <UnderlineOutlined />, size: "small" },
+  { label: "Highlight", style: "HIGHLIGHT", icon: <HighlightOutlined />, size: "small" },
+  { label: "Italic", style: "ITALIC", icon: <ItalicOutlined />, size: "small" },
 ];

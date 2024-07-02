@@ -12,6 +12,8 @@ import cl from "./style.module.css"
 import AuthService from "../../services/AuthService";
 import Page403Component from "../Page403/Page403Component";
 import CategoriesDashboardComponent from "../CategoriesDashboardPage/CategoriesDashboardComponent";
+import PostMainAdmin from "../PostMainAdminPage/PostMainAdmin";
+import PostCreatorPage from "../PostCreatorComponent/PostCreatorPage";
 
 const AdminRouter: React.FC = () => {
     const dispatch = useAppDispatch()
@@ -73,6 +75,8 @@ const AdminRouter: React.FC = () => {
             <Route path="/" element={<AdminLayout/>}>
                 <Route index element={<MainAdmin/>}/>
                 <Route path={"/categories"} element={<CategoriesDashboardComponent/>}/>
+                <Route path={"/posts"} element={<PostMainAdmin/>}/>
+                <Route path={"/posts/create"} element={<PostCreatorPage/>}/>
                 <Route path={"*"} element={<Page404/>}/>
             </Route>
         </Routes>

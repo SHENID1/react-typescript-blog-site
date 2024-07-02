@@ -11,6 +11,7 @@ import type { TTextEditorTextStyle } from "./types";
 
 import "draft-js/dist/Draft.css";
 import "./TextEditor.css";
+import {Affix} from "antd";
 
 type TClasses = {
     textEditor?: string;
@@ -33,7 +34,7 @@ const TextEditorComponent: FC<TProps> = ({
                                              placeholder,
                                              title,
                                          }) => {
-    const [isFocused, setFocused] = useState(false);
+    const [, setFocused] = useState(false);
     const [editorState, setEditorState] = useState<typeof EditorState>(EditorState.createEmpty());
 
     let wrapperClassName = "TextEditor-Wrapper";
@@ -79,6 +80,7 @@ const TextEditorComponent: FC<TProps> = ({
         onChangeHTMLText?.(convertMessageToHtml(value.getCurrentContent()));
         const stateWithContentAndSelection = EditorState.forceSelection(value, currentSelection);
         setEditorState(stateWithContentAndSelection);
+        // eslint-disable-next-line
     }, []);
 
     const handleKeyCommand = useCallback(
@@ -89,7 +91,7 @@ const TextEditorComponent: FC<TProps> = ({
                 return "handled";
             }
             return "not-handled";
-        },
+        },// eslint-disable-next-line
         [editorState, setEditorState],
     );
 
@@ -106,23 +108,12 @@ const TextEditorComponent: FC<TProps> = ({
         <div className={clsx("TextEditor", classes?.textEditor)}>
             {/*<div className="TextEditor-Title">{title}</div>*/}
             <div
-                className={clsx("TextEditor-Area", {
-                    "TextEditor-Area__isFocused": isFocused || contentState.hasText(),
+                className={clsx("TextEditor-Area", "TextEditor-Area__isFocused", {
                     "TextEditor-Area__isInvalid": isInvalid,
                 })}
                 onClick={handleChangeFocus}
             >
-                <div className={wrapperClassName}>
-                    <Editor
-                        blockStyleFn={getBlockStyle}
-                        customStyleMap={TEXT_EDITOR_CUSTOM_STYLES}
-                        editorState={editorState}
-                        handleKeyCommand={handleKeyCommand}
-                        onBlur={handleChangeBlur}
-                        onChange={handleChangeText}
-                        placeholder={placeholder}
-                    />
-                </div>
+                 <Affix offsetTop={10}>
                 <div className="TextEditor-Sub">
                     <BlockStyleControls
                         editorState={editorState}
@@ -139,6 +130,19 @@ const TextEditorComponent: FC<TProps> = ({
                         }}
                     />
                 </div>
+                 </Affix>
+                <div className={wrapperClassName}>
+                    <Editor
+                        blockStyleFn={getBlockStyle}
+                        customStyleMap={TEXT_EDITOR_CUSTOM_STYLES}
+                        editorState={editorState}
+                        handleKeyCommand={handleKeyCommand}
+                        onBlur={handleChangeBlur}
+                        onChange={handleChangeText}
+                        placeholder={placeholder}
+                    />
+                </div>
+
             </div>
         </div>
     );

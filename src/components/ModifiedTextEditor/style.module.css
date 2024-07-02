@@ -1,0 +1,5 @@
+.main {
+      border-left: 2px solid rgb(13, 115, 92);
+      display: flex;
+      flex-direction: column;
+}

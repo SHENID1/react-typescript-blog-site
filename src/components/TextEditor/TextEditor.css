@@ -31,9 +31,10 @@
   display: none;
 }
 .TextEditor .DraftEditor-editorContainer {
-  height: 222px;
+  height: max-content;
+  min-height: 30px;
   color: inherit;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 .TextEditor-Title {
   opacity: 0.5;
@@ -42,22 +43,25 @@
 }
 .TextEditor-Area {
   box-sizing: border-box;
-  border-radius: 8px;
+  /*border-radius: 8px;*/
   border: 1px solid #F5F5F6FF;
 }
 .TextEditor-Area__isFocused {
-  border: 1px solid #B0976AFF;
 }
 .TextEditor-Area__isInvalid {
   border: 1px solid #E31235FF;
 }
 .TextEditor-Sub {
   display: flex;
+  margin-left: 8px;
   gap: 8px;
   box-sizing: border-box;
   padding: 16px;
   border-top: 1px solid #F5F5F6FF;
-  color: #B0976AFF;
+  color: rgb(13, 115, 92);
+  border-radius: 8px;
+  background-color: lightgray;
+  width: max-content;
 }
 .TextEditor-Wrapper__hidePlaceholder .public-DraftEditorPlaceholder-root {
   display: none;

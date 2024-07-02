@@ -1,6 +1,6 @@
 import React from 'react';
 import {IconType} from "../TextEditor";
-
+import cl from './style.module.css';
 
 interface IconButtonProps {
     isActive?: boolean;
@@ -9,7 +9,7 @@ interface IconButtonProps {
 const IconButton: React.FC<IconButtonProps> = ({isActive, typeIcon}) => {
 
     return (
-        <div>
+        <div className={cl.button}>
             {typeIcon}
         </div>
     );

@@ -10,8 +10,8 @@ import {userSlice} from "../../store/reducers/UserSlice";
 
 
 const NavOption = [
-    {key: "1", label: (<Link to="/">Главная</Link>)},
-    {key: "2", label: (<Link to="postd" className={cl.cw}>Статьи</Link>)},
+    {key: "1", label: (<Link to="/admin">Главная</Link>)},
+    {key: "2", label: (<Link to="posts" className={cl.cw}>Статьи</Link>)},
     {key: "3", label: (<Link to="categories" className={cl.cw}>Категории</Link>)},
     // {key: "4", label: (<Link to="contacts">Контакты</Link>)},
     // {key: "5", label: (<Link to="self">О себе</Link>)},
