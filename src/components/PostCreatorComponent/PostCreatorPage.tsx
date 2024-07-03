@@ -6,7 +6,7 @@ import {
     Upload,
     Form,
     Skeleton,
-    message, Button
+    message, Button, Switch
 } from "antd";
 import {UploadOutlined} from "@ant-design/icons";
 
@@ -16,6 +16,7 @@ import type {GetProp, UploadProps} from 'antd';
 import {ApiUrl} from "../../api";
 import ImageApi from "../../api/imageApi";
 import ModifiedTextEditorComponent from "../ModifiedTextEditor/ModifiedTextEditorComponent";
+import PostApi from "../../api/postApi";
 
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
@@ -23,6 +24,11 @@ type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 const PostCreatorPage = () => {
     const [loading, setLoading] = React.useState<boolean>(true);
     const [, setFileName] = useState<string | null>(null);
+    const [data, setData] = useState<string[]>(["htmlText <span></span>"]);
+
+    useEffect(() => {
+        console.log(data)
+    }, [data]);
 
     const normFile = (e: any) => {
         if (Array.isArray(e)) {
@@ -66,7 +72,13 @@ const PostCreatorPage = () => {
         listType: "picture",
         onRemove: ImageApi.deleteImage,
     };
-
+    const onFinish = (values: any) => {
+        values.urlPreview = values.urlPreview[0].response
+        values.content = data
+        console.log(values);
+        PostApi.create(values)
+    }
+    const handlerData = (arr: string[]) => setData(arr);
     if (loading) return <Skeleton active/>
     return (
         <div>
@@ -76,29 +88,36 @@ const PostCreatorPage = () => {
                 wrapperCol={{span: 14}}
                 layout="horizontal"
                 style={{minWidth: "max-content", width: 1000}}
+                onFinish={onFinish}
+                name={"post"}
+                initialValues={{isVisible: true}}
             >
 
-                <Form.Item label="Заголовок">
+                <Form.Item label="Заголовок" name={"title"}>
                     <Input/>
                 </Form.Item>
-                <Form.Item label="Категория">
+                <Form.Item label="Категория" name={"categories"}>
                     <Select>
                         {categories.map((item: Categories) => <Select.Option value={item._id}
                                                                              key={item._id}>{item.name}</Select.Option>)}
                     </Select>
                 </Form.Item>
-
-
-                <Form.Item label="Превью фото" valuePropName="fileList" getValueFromEvent={normFile}>
+                <Form.Item label="Открытый доступ" valuePropName="checked" name={"isVisible"}>
+                    <Switch />
+                </Form.Item>
+                <Form.Item label="Превью фото" valuePropName="fileList" getValueFromEvent={normFile}
+                           name={"urlPreview"}>
                     <Upload {...props}>
                         <Button icon={<UploadOutlined/>}>Загрузить</Button>
                     </Upload>
                 </Form.Item>
-                <ModifiedTextEditorComponent/>
+                <Form.Item label="Контент" name={"content"} >
+                    <ModifiedTextEditorComponent getData={handlerData}/>
+                </Form.Item>
+
                 <br/>
                 <Button type="primary" size="large" htmlType="submit" className={cl.submitButton}>Создать</Button>
             </Form>
-
 
         </div>
     );
@@ -111,5 +130,6 @@ export default PostCreatorPage;
 // categories: string;
 // urlPreview: string;
 // content: string[];
+// isVisible: boolean;
 // commentaries: IComment[];
 // dateCreated: Date;
