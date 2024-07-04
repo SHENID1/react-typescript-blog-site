@@ -3,27 +3,38 @@ import {FC, memo, useState} from "react";
 import {Editor} from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import draftToHtml from "draftjs-to-html";
+import { convertFromHTML, ContentState } from 'draft-js'
+
 // import {Fragment} from "react";
 // import {convertFromHTML} from "draft-convert";
 
 
 type TProps = {
-    htmlText?: string;
+    defaultValue?: string;
     isInvalid?: boolean;
     onChangeHTMLText?: (value: string) => void;
     getValue?: () => string;
     placeholder?: string;
     title?: string;
 };
-const AllTextEditor: FC<TProps> = ({onChangeHTMLText}) => {
-    const [editorState, setEditorState] = useState(EditorState.createEmpty());
+const AllTextEditor: FC<TProps> = ({onChangeHTMLText, defaultValue}) => {
+
+    const blocksFromHTML = convertFromHTML(defaultValue);
+      const content = ContentState.createFromBlockArray(
+        blocksFromHTML.contentBlocks,
+        blocksFromHTML.entityMap,
+      );
+      // console.log(1, EditorState.createWithContent(content), defaultValue)
+
+
+    const [editorState, setEditorState] = useState(defaultValue ? EditorState.createWithContent(content) : EditorState.createEmpty());
     // const [text, setText] = useState();
     const onEditorStateChange = function (editorState: typeof EditorState) {
         setEditorState(editorState);
         // const {blocks} = convertToRaw(editorState.getCurrentContent());
         /*let text = blocks.reduce((acc, item) => {
-          acc = acc + item.text;
-          return acc;
+            acc = acc + item.text;
+            return acc;
         }, "");*/
 
         // let text = editorState.getCurrentContent().getPlainText("\u0001");

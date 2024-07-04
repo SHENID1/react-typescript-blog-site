@@ -17,6 +17,7 @@ import {ApiUrl} from "../../api";
 import ImageApi from "../../api/imageApi";
 import ModifiedTextEditorComponent from "../ModifiedTextEditor/ModifiedTextEditorComponent";
 import PostApi from "../../api/postApi";
+import IPost from "../../models/IPost";
 
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
@@ -26,9 +27,9 @@ const PostCreatorPage = () => {
     const [, setFileName] = useState<string | null>(null);
     const [data, setData] = useState<string[]>(["htmlText <span></span>"]);
 
-    useEffect(() => {
-        console.log(data)
-    }, [data]);
+    // useEffect(() => {
+    //     console.log(data)
+    // }, [data]);
 
     const normFile = (e: any) => {
         if (Array.isArray(e)) {
@@ -75,11 +76,13 @@ const PostCreatorPage = () => {
     const onFinish = (values: any) => {
         values.urlPreview = values.urlPreview[0].response
         values.content = data
-        console.log(values);
-        PostApi.create(values)
+        // console.log(values);
+        PostApi.create(values).then((data: IPost) => {
+            window.location.replace(`${window.location.origin}/admin/posts/${data._id}`)
+        })
     }
     const handlerData = (arr: string[]) => setData(arr);
-    if (loading) return <Skeleton active/>
+    if (loading) return <><h1>Создание Статьи</h1><Skeleton active/></>
     return (
         <div>
             <h1>Создание Статьи</h1>
@@ -103,7 +106,7 @@ const PostCreatorPage = () => {
                     </Select>
                 </Form.Item>
                 <Form.Item label="Открытый доступ" valuePropName="checked" name={"isVisible"}>
-                    <Switch />
+                    <Switch/>
                 </Form.Item>
                 <Form.Item label="Превью фото" valuePropName="fileList" getValueFromEvent={normFile}
                            name={"urlPreview"}>
@@ -111,7 +114,7 @@ const PostCreatorPage = () => {
                         <Button icon={<UploadOutlined/>}>Загрузить</Button>
                     </Upload>
                 </Form.Item>
-                <Form.Item label="Контент" name={"content"} >
+                <Form.Item label="Контент" name={"content"}>
                     <ModifiedTextEditorComponent getData={handlerData}/>
                 </Form.Item>
 

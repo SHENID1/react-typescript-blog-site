@@ -14,6 +14,8 @@ import Page403Component from "../Page403/Page403Component";
 import CategoriesDashboardComponent from "../CategoriesDashboardPage/CategoriesDashboardComponent";
 import PostMainAdmin from "../PostMainAdminPage/PostMainAdmin";
 import PostCreatorPage from "../PostCreatorComponent/PostCreatorPage";
+import PostUpdate from "../PostUpdateComponent/PostUpdate";
+import CategoriesPosts from "../CategoriesPost/CategoriesPosts";
 
 const AdminRouter: React.FC = () => {
     const dispatch = useAppDispatch()
@@ -75,9 +77,11 @@ const AdminRouter: React.FC = () => {
             <Route path="/" element={<AdminLayout/>}>
                 <Route index element={<MainAdmin/>}/>
                 <Route path={"/categories"} element={<CategoriesDashboardComponent/>}/>
+                <Route path={"/categories/categoryPosts/:id"} element={<CategoriesPosts />}/>
                 <Route path={"/posts"} element={<PostMainAdmin/>}/>
                 <Route path={"/posts/create"} element={<PostCreatorPage/>}/>
                 <Route path={"*"} element={<Page404/>}/>
+                <Route path="/posts/:id" element={<PostUpdate />}/>
             </Route>
         </Routes>
     );

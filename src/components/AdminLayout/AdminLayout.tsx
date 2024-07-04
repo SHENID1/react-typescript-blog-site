@@ -98,7 +98,7 @@ const AdminLayout: React.FC = () => {
                         />
                         </Drawer>
                         <div className={cl.user}>
-                            <span className={cl.sp}>Добро пожаловать, {user?.username}</span>
+                            <span className={cl.sp}>Добро пожаловать, <b>{user?.username}</b></span>
                             <Button onClick={logout_handler} className={cl.btn}>Выйти</Button>
                         </div>
                     </div>

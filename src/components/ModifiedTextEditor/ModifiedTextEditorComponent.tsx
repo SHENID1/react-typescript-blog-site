@@ -1,12 +1,12 @@
 import React, {FC, useEffect, useState} from 'react';
 import cl from "./style.module.css"
 import {Button, type GetProp, message, Space, Upload, UploadProps} from "antd";
+import type {UploadFile} from "antd";
 import {ApiUrl} from "../../api";
 import ImageApi from "../../api/imageApi";
 import {MinusSquareOutlined, UploadOutlined} from "@ant-design/icons";
-import AllTextEditor from "../AdminPanel/test";
-// import draftToHtml from "draftjs-to-html";
-// import {convertToRaw} from "draft-js";
+import AllTextEditor from "../AdminPanel/AllTextEditor";
+
 
 // function removeItemAll(arr: [], value: any) {
 //     let i = 0;
@@ -21,14 +21,26 @@ import AllTextEditor from "../AdminPanel/test";
 // }
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
+const getImageDataByName = (name: string) => {
+    if (name === "null") return undefined;
+    const t: UploadFile[] = [{
+        uid: `id_${name}`,
+        name: name,
+        status: 'done',
+        url: `${ApiUrl}/${name}`,
+        thumbUrl: `${ApiUrl}/${name}`,
+    }]
+    return t
+}
+
 interface TextEditorComponentProps {
     initialContent?: string[];
     getData?: (arr: string[]) => void;
 }
 
 const ModifiedTextEditorComponent: FC<TextEditorComponentProps> = ({initialContent, getData}) => {
-    const [contents, setContents] = useState<string[]>(["htmlText <span></span>"]);
-    const [data, setData] = useState<string[]>(["htmlText <span></span>"]);
+    const [contents, setContents] = useState<string[]>(initialContent ? initialContent : ["htmlText <span></span>"]);
+    const [data, setData] = useState<string[]>(initialContent ? initialContent : ["htmlText <span></span>"]);
 
     useEffect(() => {
         getData?.(data);
@@ -92,9 +104,10 @@ const ModifiedTextEditorComponent: FC<TextEditorComponentProps> = ({initialConte
             {contents.map((content, index) => {
                 const contentSplit = content.split(" ");
                 if (contentSplit[0] === "htmlText") return <AllTextEditor
+                    defaultValue={content.slice(9)}
                     onChangeHTMLText={(value: string) => ChangeHtml(value, index)} key={index}/>
 
-                return <Space key={index}><Upload {...props} key={index}
+                return <Space key={index}><Upload {...props} key={index} defaultFileList={getImageDataByName(contentSplit[1])}
                                                   onChange={(info) => ImageChangingHandler(info, index)}>
                     <Button icon={<UploadOutlined/>}>Загрузить</Button>
                 </Upload>

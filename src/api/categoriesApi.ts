@@ -42,5 +42,12 @@ export default class CategoriesApi {
         } catch (e: any) {
             throw Error(e.message)
         }
+    }static async getNameById(id: string) {
+        try {
+            const res = await $api.get<string>(`/api/categories/${id}`);
+            return res.data;
+        } catch (e: any) {
+            throw Error(e.message)
+        }
     }
 }

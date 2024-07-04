@@ -1,8 +1,22 @@
-import React, {FC} from 'react';
-import {Button, ConfigProvider} from "antd";
+import React, {FC, useEffect} from 'react';
+import {Button, ConfigProvider, Skeleton} from "antd";
 import {NavLink} from "react-router-dom";
+import cl from "./style.module.css";
+import Categories from "../../models/categories";
+import CategoriesApi from "../../api/categoriesApi";
+
 
 const PostMainAdmin: FC = () => {
+    const [categories, setCategories] = React.useState<Categories[]>([])
+    const [loading, setLoading] = React.useState<boolean>(false);
+
+    useEffect(() => {
+        CategoriesApi.getAllCategories().then((data) => {
+            setCategories(data);
+            setLoading(false)
+        }).catch()
+    }, []);
+    if (loading) return <><h1>Статьи</h1><Skeleton active/></>
     return (
         <div>
             <ConfigProvider
@@ -16,11 +30,21 @@ const PostMainAdmin: FC = () => {
             >
                 <h1>Статьи</h1>
                 <br/>
-                <NavLink to={"/admin/posts/create"}>
-                    <Button type="link">
-                        Написать статью
-                    </Button>
-                </NavLink>
+                <div className={cl.createLink}>
+                    <NavLink to={"/admin/posts/create"}>
+                        <Button type="link">
+                            Написать статью
+                        </Button>
+                    </NavLink>
+                </div>
+                <div>
+                    {categories.map((category) => <NavLink to={`/admin/categories/categoryPosts/${category._id}`} key={category._id}>
+                        <div className={cl.item} >
+                            <span className={cl.mr}>{category.name}</span>
+                            <Button loading={loading}>Показать посты</Button>
+                        </div>
+                    </NavLink>)}
+                </div>
             </ConfigProvider>
 
         </div>
