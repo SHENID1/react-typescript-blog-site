@@ -8,7 +8,7 @@ import CategoriesApi from "../../api/categoriesApi";
 
 const PostMainAdmin: FC = () => {
     const [categories, setCategories] = React.useState<Categories[]>([])
-    const [loading, setLoading] = React.useState<boolean>(false);
+    const [loading, setLoading] = React.useState<boolean>(true);
 
     useEffect(() => {
         CategoriesApi.getAllCategories().then((data) => {
@@ -16,7 +16,7 @@ const PostMainAdmin: FC = () => {
             setLoading(false)
         }).catch()
     }, []);
-    if (loading) return <><h1>Статьи</h1><Skeleton active/></>
+    // if (loading) return <><h1>Статьи</h1><Skeleton active/></>
     return (
         <div>
             <ConfigProvider
@@ -37,10 +37,13 @@ const PostMainAdmin: FC = () => {
                         </Button>
                     </NavLink>
                 </div>
+                {loading ? <Skeleton active/> : null}
                 <div>
-                    {categories.map((category) => <NavLink to={`/admin/categories/categoryPosts/${category._id}`} key={category._id}>
-                        <div className={cl.item} >
+                    {categories?.map((category) => <NavLink to={`/admin/categories/categoryPosts/${category._id}`}
+                                                           key={category._id}>
+                        <div className={cl.item}>
                             <span className={cl.mr}>{category.name}</span>
+                            <span className={cl.mr}>{category.count} </span>
                             <Button loading={loading}>Показать посты</Button>
                         </div>
                     </NavLink>)}

@@ -51,6 +51,8 @@
 }
 .outlet {
     width: 100%;
+    max-width: 100vw;
+    max-height: max-content;
     min-height: 100vh;
     padding: 30px;
 }

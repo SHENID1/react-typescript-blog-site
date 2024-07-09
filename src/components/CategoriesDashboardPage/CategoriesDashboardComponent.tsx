@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import cl from "./style.module.css"
 import Categories from "../../models/categories";
 import CategoriesApi from "../../api/categoriesApi";
-import {Button, Form, Input} from "antd";
+import {Button, Form, Input, Skeleton} from "antd";
 import {DeleteOutlined} from "@ant-design/icons";
 
 function removeItemAll(arr: any[], value: any) {
@@ -20,10 +20,12 @@ function removeItemAll(arr: any[], value: any) {
 const CategoriesDashboardComponent = () => {
     const [categories, setCategories] = React.useState<Categories[]>([])
     const [loading, setLoading] = React.useState<boolean>(false);
+    const [FLoading, setFLoading] = React.useState<boolean>(true);
     const [FormRef] = Form.useForm()
     useEffect(() => {
         CategoriesApi.getAllCategories().then((data) => {
             setCategories(data);
+            setFLoading(false)
         }).catch()
     }, []);
 
@@ -50,6 +52,7 @@ const CategoriesDashboardComponent = () => {
         }).catch(() => setLoading(false))
     }
 
+    // if (loading) return <><h1>Категории</h1><Skeleton active/></>
     return (
         <div>
             <h1>Категории</h1>
@@ -76,7 +79,8 @@ const CategoriesDashboardComponent = () => {
                         </Button>
                     </Form.Item>
                 </Form>
-                {categories.map((category) => <div className={cl.item} key={category._id}>
+                {FLoading ? <Skeleton active/> : null}
+                {categories?.map((category) => <div className={cl.item} key={category._id}>
                     <span className={cl.mr}>{category.name}</span>
                     {/*<Button icon={<EditOutlined/>} onClick={showModal} className={cl.mr} loading={loading}>Изменить</Button>*/}
                     <Button icon={<DeleteOutlined/>} onClick={() => deleteCategories(category)}

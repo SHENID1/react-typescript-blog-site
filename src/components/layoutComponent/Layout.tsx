@@ -1,106 +1,218 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Link, Outlet} from "react-router-dom";
-import {Layout, Menu, ConfigProvider, Drawer, Space} from "antd";
-import {EllipsisOutlined, JavaScriptOutlined, MenuOutlined} from "@ant-design/icons";
+import {Layout, Menu, ConfigProvider, Drawer, Space, MenuProps} from "antd";
+import {JavaScriptOutlined, MenuOutlined} from "@ant-design/icons";
 import Footer from "../FooterComponent/Footer";
 import cl from "./style.module.css";
+import CategoriesApi from "../../api/categoriesApi";
+import {useAppDispatch, useAppSelector} from "../../hooks/redux";
+import {CategoriesSlice} from "../../store/reducers/CategoriesSlice";
+import {ApiUrl} from "../../api";
 
 
-const NavOption = [
-    {key: "1", label: (<Link to="/">Главная</Link>)},
-    {key: "2", label: (<Link to="postd" className={cl.cw}>Статьи</Link>), children: [{
-                type: 'group',
-            label: <span className={cl.cw}>Категории:</span>,
-                children: [
-                    { label: <Link to="postd" className={cl.cb}>Новости</Link>, key: 'setting:1' },
-                    { label: <Link to="postd" className={cl.cb}>что то еще</Link>, key: 'setting:2' },
-                    { label: <Link to="postd" className={cl.cb}>тема 3</Link>, key: 'setting:3' },
-                    { label: <Link to="postd" className={cl.cb}>тема 4</Link>, key: 'setting:4' },
-                    { label: <Link to="postd" className={cl.cb}>тема 5</Link>, key: 'setting:5' },
-                    // eslint-disable-next-line react/jsx-no-undef
-                    { label: <Link to="postd" className={cl.cb}>Еще...</Link>, key: 'setting:6', icon:<EllipsisOutlined /> },
-                ],},],},
-    {key: "3", label: (<Link to="contacts">Контакты</Link>)},
-    {key: "4", label: (<Link to="self">О себе</Link>)},
-    {key: "5", label: (<Link to="subscribe">Подписка на новости</Link>)},
-    // {key: 5, label: (<Link to="event">События</Link>)},
-]
+type MenuItem = Required<MenuProps>['items'][number];
 
 const MyLayout = () => {
-    const [open, setOpen] = React.useState<boolean>(false);
+        const [open, setOpen] = React.useState<boolean>(false);
+        const [selected, setSelected] = React.useState<string[]>([])
+        const [loading, setLoading] = React.useState<boolean>(true)
 
-    const handleOpenBurgerMenu = () => setOpen(!open);
-    const onClose = () => setOpen(false);
+        const dispatch = useAppDispatch()
+        const {CatList} = useAppSelector(state => state.categoriesReducer)
+        const {setCategories} = CategoriesSlice.actions;
 
-    return (
-        <ConfigProvider
-            theme={{
-                components: {
-                    Menu: {
-                        darkItemSelectedBg: "rgba(18,44,37,0)",
-                        itemSelectedBg: "rgba(2,51,35,0)",
-                        darkItemBg: "#2b6554",
-                        itemBg: "rgba(43,101,84,0)",
-                        borderRadius: 10,
-                        horizontalItemSelectedColor: "rgb(23,246,195)",
-                        colorBgElevated: "#38876e",
-                        colorText: "rgb(255,255,255)",
+        const items: MenuItem[] = [
+            {
+                key: 'grp',
+                label: 'Категории статей',
+                type: 'group',
+                children: [
+                    loading ? {
+                        label: "Идет загрузка...",
+                        key: `settings:loading`,
+                        disabled: true,
+                    } : null,
+                    ...CatList?.map((cat, index) => {
+                        return {
+                            label: <Link to={`/categories/${cat._id}`} className={cl.cb}>{cat.name}</Link>,
+                            key: `settings:${cat._id}`,
+                        }
+                    })
+
+                ],
+            },
+        ];
+        const NavOption = [
+            {key: "1", label: (<Link to="/">Главная</Link>)},
+            {
+                key: "settings:all", label: (<Link to="/categories/all" className={cl.cw}>Статьи</Link>),
+            },
+
+
+            {key: "3", label: (<Link to="contacts">Контакты</Link>)},
+            {key: "4", label: (<Link to="about">О себе</Link>)},
+            {key: "5", label: (<Link to="subscribe">Подписка на новости</Link>)},
+            // {key: 5, label: (<Link to="event">События</Link>)},
+        ]
+        const NavOptionWithCategories = [
+            {key: "1", label: (<Link to="/">Главная</Link>)},
+            {
+                key: "2", label: (<Link to="/categories/all" className={cl.cw}>Статьи</Link>),
+                children: [{
+                    type: 'group',
+                    label: <span className={cl.cw}>Категории:</span>,
+                    children: [
+                        ...CatList?.map((cat, index) => {
+                            return {
+                                label: <Link to={`/categories/${cat._id}`} className={cl.cb}>{cat.name}</Link>,
+                                key: `settings:${cat._id}`,
+                            }
+                        }),
+
+                    ],
+                },],
+            },
+
+            {key: "3", label: (<Link to="contacts">Контакты</Link>)},
+            {key: "4", label: (<Link to="about">О себе</Link>)},
+            {key: "5", label: (<Link to="subscribe">Подписка на новости</Link>)},
+            // {key: 5, label: (<Link to="event">События</Link>)},
+        ]
+
+        const reloadCategories = async () => {
+            const uri = `${ApiUrl}/api/categories`
+            const newCache = await caches.open('categories');
+            const res = await newCache.match(uri);
+            if (!res) {
+                // CategoriesApi.getAllCategories().then(r => {
+                //     dispatch(setCategories(r));
+                //     setLoading(false);
+                // })
+                return
+            }
+            res.json().then(data => {
+                dispatch(setCategories(data));
+                setLoading(false);
+            });
+        }
+        const LoadCategory = async () => {
+            // await System.storage.setItem('usersData', JSON.stringify(data));
+            if ('caches' in window) {
+                await reloadCategories()
+                const uri = `${ApiUrl}/api/categories`
+                const newCache = await caches.open('categories');
+                newCache.add(uri).then(() => {
+                    reloadCategories()
+                })
+                    .catch((error) => console.error("Error adding data to cache:", error));
+
+
+            } else {
+                CategoriesApi.getAllCategories().then(r => {
+                    dispatch(setCategories(r));
+                    setLoading(false);
+                })
+            }
+        }
+
+        const onChangeHandler = (props: any) => {
+            setSelected(props.key);
+        }
+        useEffect(() => {
+                LoadCategory().then()
+            },
+            // eslint-disable-next-line
+            []
+        );
+
+        const handleOpenBurgerMenu = () => setOpen(!open);
+        const onClose = () => setOpen(false);
+
+        return (
+            <ConfigProvider
+                theme={{
+                    components: {
+                        Menu: {
+                            darkItemSelectedBg: "rgba(18,44,37,0)",
+                            itemSelectedBg: "rgba(2,51,35,0)",
+                            darkItemBg: "#38876e",
+                            itemBg: "rgba(43,101,84,0)",
+                            borderRadius: 10,
+                            horizontalItemSelectedColor: "rgb(23,246,195)",
+                            colorBgElevated: "#38876e",
+                            colorText: "rgb(255,255,255)",
+                        },
+                        Layout: {
+                            headerBg: "#38876e",
+                            headerPadding: 0,
+                        },
+                        Drawer: {
+                            colorBgElevated: "#2b6554",
+                        }
                     },
-                    Layout: {
-                        headerBg: "#38876e",
-                        headerPadding: 0,
-                    },
-                    Drawer: {
-                        colorBgElevated: "#2b6554",
-                    }
-                },
-            }}
-        >
+                }}
+            >
 
 
-            <Layout className={cl.mainL}>
-                <Layout.Header>
-                    <div className={cl.cont}>
-                        <div className={cl.logoCont}>
-                            <JavaScriptOutlined className={cl.logo}/>
-                        </div>
+                <Layout className={cl.mainL}>
+                    <Layout.Header>
+                        <div className={cl.cont}>
+                            <div className={cl.logoCont}>
+                                <JavaScriptOutlined className={cl.logo}/>
+                            </div>
 
-                        <div className={cl.name}>
-                            Все Закупки
-                        </div>
-                        <Menu theme="light"
-                              mode="horizontal"
-                              defaultSelectedKeys={["1"]}
-                              items={NavOption}
-                              style={{borderRadius: "5px", width: "500px"}}
-                              className={cl.menuHorizontal}
-                        />
-                        <MenuOutlined onClick={handleOpenBurgerMenu} className={cl.MenuOutlined}/>
-                        <Drawer open={open}
-                                size={"default"}
-                                placement={"left"}
-                                onClose={onClose}
-                                extra={
-                                    <Space>
-                                        Все Закупки
-                                    </Space>}
-                        >
-
+                            <div className={cl.name}>
+                                Все Закупки
+                            </div>
                             <Menu theme="light"
-                              mode="inline"
-                              defaultSelectedKeys={["1"]}
-                              items={NavOption}
-                              style={{borderRadius: "5px", width: "100%"}}
-                              className={cl.menuVertical}
+                                  mode="horizontal"
+                                  items={NavOption}
+                                  onClick={onChangeHandler}
+                                  selectedKeys={selected}
+                                  style={{borderRadius: "5px", width: "500px"}}
+                                  className={cl.menuHorizontal}
+                            />
+                            <MenuOutlined onClick={handleOpenBurgerMenu} className={cl.MenuOutlined}/>
+                            <Drawer open={open}
+                                    size={"default"}
+                                    placement={"left"}
+                                    onClose={onClose}
+                                    extra={
+                                        <Space>
+                                            Все Закупки
+                                        </Space>}
+                            >
+
+                                <Menu theme="light"
+                                      mode="inline"
+                                      items={NavOptionWithCategories}
+                                      selectedKeys={selected}
+                                      onClick={onChangeHandler}
+                                      style={{borderRadius: "5px", width: "100%"}}
+                                      className={cl.menuVertical}
+                                />
+                            </Drawer>
+                        </div>
+                    </Layout.Header>
+                    <div className={cl.main}>
+                        <Menu
+                            style={{width: 256}}
+                            mode="inline"
+                            selectedKeys={selected}
+                            onClick={onChangeHandler}
+                            items={items}
+                            theme={"dark"}
+                            className={cl.leftMenu}
                         />
-                        </Drawer>
+                        <div className={cl.outlet}>
+                            <Outlet/>
+                        </div>
                     </div>
-                </Layout.Header>
-                <Outlet/>
-                <Footer/>
-            </Layout>
-        </ConfigProvider>
-    );
-};
+                    <Footer/>
+                </Layout>
+            </ConfigProvider>
+        );
+    }
+;
 
 export default MyLayout;

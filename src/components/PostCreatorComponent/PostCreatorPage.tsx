@@ -8,7 +8,7 @@ import {
     Skeleton,
     message, Button, Switch
 } from "antd";
-import {UploadOutlined} from "@ant-design/icons";
+import {RollbackOutlined, UploadOutlined} from "@ant-design/icons";
 
 import Categories from "../../models/categories";
 import CategoriesApi from "../../api/categoriesApi";
@@ -18,6 +18,7 @@ import ImageApi from "../../api/imageApi";
 import ModifiedTextEditorComponent from "../ModifiedTextEditor/ModifiedTextEditorComponent";
 import PostApi from "../../api/postApi";
 import IPost from "../../models/IPost";
+import {NavLink} from "react-router-dom";
 
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
@@ -41,7 +42,8 @@ const PostCreatorPage = () => {
     const [categories, setCategories] = React.useState<Categories[]>([])
     useEffect(() => {
         CategoriesApi.getAllCategories().then((data) => {
-            setCategories(data);
+            const FilteredData = data.filter((a) => a._id !== "all")
+            setCategories(FilteredData);
             setLoading(false);
         }).catch()
     }, []);
@@ -79,18 +81,21 @@ const PostCreatorPage = () => {
         // console.log(values);
         PostApi.create(values).then((data: IPost) => {
             window.location.replace(`${window.location.origin}/admin/posts/${data._id}`)
-        })
+        }).catch((e)=>alert(e))
     }
     const handlerData = (arr: string[]) => setData(arr);
     if (loading) return <><h1>Создание Статьи</h1><Skeleton active/></>
     return (
         <div>
             <h1>Создание Статьи</h1>
+            <NavLink to={`/admin/posts/`}>
+                <Button icon={<RollbackOutlined/>}>Вернуться назад</Button>
+            </NavLink>
             <Form
                 labelCol={{span: 4}}
                 wrapperCol={{span: 14}}
                 layout="horizontal"
-                style={{minWidth: "max-content", width: 1000}}
+                // style={{minWidth: "max-content", width: 1000}}
                 onFinish={onFinish}
                 name={"post"}
                 initialValues={{isVisible: true}}

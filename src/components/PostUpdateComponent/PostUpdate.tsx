@@ -1,4 +1,4 @@
-import {useParams} from "react-router-dom";
+import {NavLink, useParams} from "react-router-dom";
 import React, {useEffect, useState} from 'react';
 import cl from "./style.module.css";
 import {
@@ -9,7 +9,7 @@ import {
     Skeleton,
     message, Button, Switch, DatePicker, Space
 } from "antd";
-import {UploadOutlined} from "@ant-design/icons";
+import {RollbackOutlined, UploadOutlined} from "@ant-design/icons";
 import dayjs from "dayjs"
 import Categories from "../../models/categories";
 import CategoriesApi from "../../api/categoriesApi";
@@ -57,10 +57,11 @@ const PostUpdate = () => {
     const LoadData = async () => {
         if (!id) throw new Error("id must be provided");
         const cat = await CategoriesApi.getAllCategories()
+        const FilteredCategories = cat.filter((a) => a._id !== "all")
         const initV = await PostApi.getPostById(id);
         initV.urlPreview = getImageData(initV)
         initV.dateCreated = dayjs(initV.dateCreated)
-        setCategories(cat);
+        setCategories(FilteredCategories);
         setInitialValues(initV)
         return true
     }
@@ -129,11 +130,15 @@ const PostUpdate = () => {
         <div>
             {contextHolder}
             <h1>Обновить информацию о статье</h1>
+            <NavLink to={`/admin/categories/categoryPosts/${initialValues?.categories}`}>
+                <Button icon={<RollbackOutlined/>}>Вернуться назад</Button>
+            </NavLink>
+
             <Form
                 labelCol={{span: 4}}
                 wrapperCol={{span: 14}}
                 layout="horizontal"
-                style={{minWidth: "max-content", width: 1000}}
+                // style={{maxWidth: "100vw"}}
                 onFinish={onFinish}
                 name={"post"}
                 initialValues={initialValues ? initialValues : undefined}
@@ -173,7 +178,6 @@ const PostUpdate = () => {
                     <Button type="primary" size="large" danger className={cl.submitButton}
                             onClick={handlerDelete}>Удалить</Button>
                 </Space>
-
             </Form>
 
         </div>

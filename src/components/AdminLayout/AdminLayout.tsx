@@ -13,6 +13,7 @@ const NavOption = [
     {key: "1", label: (<Link to="/admin">Главная</Link>)},
     {key: "2", label: (<Link to="posts" className={cl.cw}>Статьи</Link>)},
     {key: "3", label: (<Link to="categories" className={cl.cw}>Категории</Link>)},
+    {key: "4", label: (<Link to="users" className={cl.cw}>Пользователи</Link>)},
     // {key: "4", label: (<Link to="contacts">Контакты</Link>)},
     // {key: "5", label: (<Link to="self">О себе</Link>)},
     // {key: "6", label: (<Link to="subscribe">Подписка на новости</Link>)},
@@ -72,9 +73,9 @@ const AdminLayout: React.FC = () => {
                         </div>
                         <Menu theme="light"
                               mode="horizontal"
-                              defaultSelectedKeys={["1"]}
+                              // defaultSelectedKeys={["1"]}
                               items={NavOption}
-                              style={{borderRadius: "5px", width: "257px"}}
+                              style={{borderRadius: "5px", width: "378px"}}
                               className={cl.menuHorizontal}
                         />
                         <MenuOutlined onClick={handleOpenBurgerMenu} className={cl.MenuOutlined}/>
@@ -91,7 +92,7 @@ const AdminLayout: React.FC = () => {
 
                             <Menu theme="light"
                               mode="inline"
-                              defaultSelectedKeys={["1"]}
+                              // defaultSelectedKeys={["1"]}
                               items={NavOption}
                               style={{borderRadius: "5px", width: "100%"}}
                               className={cl.menuVertical}

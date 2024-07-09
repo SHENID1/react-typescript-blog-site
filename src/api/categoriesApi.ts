@@ -1,4 +1,5 @@
 import $api from "./index";
+import Categories from "../models/categories";
 
 interface Response {
     name: string;
@@ -37,14 +38,14 @@ export default class CategoriesApi {
 
     static async getAllCategories() {
         try {
-            const res = await $api.get<Response[]>("/api/categories");
+            const res = await $api.get<Categories[]>("/api/categories");
             return res.data;
         } catch (e: any) {
             throw Error(e.message)
         }
-    }static async getNameById(id: string) {
+    }static async getCatById(id: string) {
         try {
-            const res = await $api.get<string>(`/api/categories/${id}`);
+            const res = await $api.get<Categories>(`/api/categories/${id}`);
             return res.data;
         } catch (e: any) {
             throw Error(e.message)

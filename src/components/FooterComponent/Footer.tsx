@@ -5,6 +5,7 @@ const Footer = () => {
     return (
         <div className={cl.footer}>
             это Футер
+
         </div>
     );
 };

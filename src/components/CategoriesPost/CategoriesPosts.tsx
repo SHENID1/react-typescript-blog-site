@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {NavLink, useParams} from "react-router-dom";
 import PostApi from "../../api/postApi";
-import {Skeleton} from "antd";
+import {Button, Skeleton} from "antd";
 import CategoriesApi from "../../api/categoriesApi";
 import IPost from "../../models/IPost";
 import cl from "./style.module.css"
-import {RightOutlined} from "@ant-design/icons";
+import {RightOutlined, RollbackOutlined} from "@ant-design/icons";
 
 const CategoriesPosts = () => {
     const {id} = useParams();
@@ -14,29 +14,45 @@ const CategoriesPosts = () => {
     const [loading, setLoading] = React.useState<boolean>(true);
     useEffect(() => {
         if (!id) return;
-        PostApi.getPostsByCategoryId(id).then((data) => {
-            setData(data);
-            setLoading(false);
-        })
-        CategoriesApi.getNameById(id).then((data) => {
-            setName(data);
-        })
+        if (id === "all") {
+            PostApi.getPostsByCategoryId(id).then((data) => {
+                setData(data);
+                setLoading(false);
+                setName("ВСЕ")
+                return;
+            })
+        } else {
+            PostApi.getPostsByCategoryId(id).then((data) => {
+                setData(data);
+                setLoading(false);
+            })
+            CategoriesApi.getCatById(id).then((data) => {
+                setName(data.name);
+            })
+        }
+
     }, [id]);
 
     if (loading) return <><h1>Статьи</h1><Skeleton active/></>
-
     return (
         <div>
             <h1>Посты для категории {name}</h1>
-            {data?.map((item) =>
+            <NavLink to={`/admin/posts/`}>
+                <Button icon={<RollbackOutlined/>}>Вернуться назад</Button>
+            </NavLink>
+            {data.length === 0 ? <h2>Постов не найдено</h2> : <></>}
+            <div className={cl.cont}>
+                {data?.map((item) =>
                 <NavLink to={`/admin/posts/${item._id}`} key={item._id}>
                     <div className={cl.element}>
-                        <div> {item.title} </div>
+                        <div>{item.title}</div>
                         <div>{item.isVisible ? "Доступен для всех" : "Доступен только админам"}</div>
                         <div>Открыть <RightOutlined/></div>
                     </div>
                 </NavLink>
             )}
+            </div>
+
         </div>
     );
 };
