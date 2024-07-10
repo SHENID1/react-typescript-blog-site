@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import {NavLink, useParams} from "react-router-dom";
-import {Breadcrumb, Skeleton} from "antd";
+import {useNavigate} from "react-router";
+import {Breadcrumb, Button, Skeleton} from "antd";
 import IPost from "../../models/IPost";
 import PostApi from "../../api/postApi";
 import cl from "./style.module.css";
@@ -10,6 +11,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import Page404 from "../Page404/Page404";
 import DOMPurify from 'dompurify';
 import ImageViewer from "./ImageViewer";
+import {RollbackOutlined} from "@ant-design/icons";
 
 
 dayjs.extend(relativeTime);
@@ -19,7 +21,7 @@ const PostReaderComponent = () => {
     const [loading, setLoading] = React.useState<boolean>(true);
     const [data, setData] = React.useState<IPost | null>(null);
     const [error, setError] = React.useState<boolean>(false);
-
+    const history = useNavigate()
     useEffect(() => {
         if (!id) return;
         PostApi.getFreePostById(id).then(r => {
@@ -41,19 +43,20 @@ const PostReaderComponent = () => {
             <Breadcrumb
                 items={[
                     {
-                        title: <NavLink to={`/`} >Главная</NavLink>,
+                        title: <NavLink to={`/`}>Главная</NavLink>,
                     },
                     {
-                        title: <NavLink to={`/categories/all`} >Все категории</NavLink>,
+                        title: <NavLink to={`/categories/all`}>Все категории</NavLink>,
                     },
                     {
-                        title: <NavLink to={`/categories/${data?.categories._id}`} >{data?.categories.name}</NavLink>,
+                        title: <NavLink to={`/categories/${data?.categories._id}`}>{data?.categories.name}</NavLink>,
                     },
                     {
                         title: data?.title,
                     },
                 ]}
             />
+            <Button type="text" onClick={() => history(-1)} style={{marginTop: 15}} icon={<RollbackOutlined />}>Вернуться назад</Button>
             <h2>{data?.title}</h2>
             <div className={cl.date}>
                 <div className={cl.tdate}>

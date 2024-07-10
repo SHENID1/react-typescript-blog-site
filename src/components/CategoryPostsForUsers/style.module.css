@@ -27,7 +27,7 @@
 
 .previewCont:hover {
     opacity: 0.95;
-    scale: 1.03;
+    /*scale: 1.03;*/
     cursor: pointer;
 
     /*background-size: auto, contain;*/

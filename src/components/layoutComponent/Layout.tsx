@@ -8,13 +8,17 @@ import CategoriesApi from "../../api/categoriesApi";
 import {useAppDispatch, useAppSelector} from "../../hooks/redux";
 import {CategoriesSlice} from "../../store/reducers/CategoriesSlice";
 import {ApiUrl} from "../../api";
+import HeaderService from "../../services/HeaderService";
 
 
 type MenuItem = Required<MenuProps>['items'][number];
 
+
 const MyLayout = () => {
         const [open, setOpen] = React.useState<boolean>(false);
-        const [selected, setSelected] = React.useState<string[]>([])
+        const path = window.location.pathname;
+        const initialSelected = HeaderService.getHeader(path)
+        const [selected, setSelected] = React.useState<string[]>(initialSelected)
         const [loading, setLoading] = React.useState<boolean>(true)
 
         const dispatch = useAppDispatch()
@@ -32,7 +36,7 @@ const MyLayout = () => {
                         key: `settings:loading`,
                         disabled: true,
                     } : null,
-                    ...CatList?.map((cat, index) => {
+                    ...CatList.slice(1)?.map((cat, index) => {
                         return {
                             label: <Link to={`/categories/${cat._id}`} className={cl.cb}>{cat.name}</Link>,
                             key: `settings:${cat._id}`,
