@@ -61,7 +61,7 @@
 .name {
     font-weight: bold;
     font-size: 20px;
-    background-color: rgba(241, 198, 155, 0.63);
+    background-color: rgb(241, 198, 155);
     border-radius: 5px;
     max-width: max-content;
     width: auto;
@@ -87,7 +87,7 @@
 .openSpan {
     border-radius: 10px;
     max-width: max-content;
-    background-color: rgba(250, 241, 232, 0.71);
+    background-color: rgba(250, 241, 232, 1);
     width: max-content;
     padding-left: 5px;
     padding-right: 5px;
@@ -111,7 +111,7 @@
     }
 
     .data {
-        opacity: 0.8;
+        /*opacity: 0.8;*/
     }
 
     .previewCont {

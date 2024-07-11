@@ -29,11 +29,11 @@ const PreviewPost: FC<Props> = ({data, name}) => {
                     <div className={cl.data}>{dateSting} - {date.fromNow()}</div>
                     <div className={cl.data}>{name}</div>
                 </div>
-                <div className={cl.open}>
-                    <div className={cl.openSpan}>
-                        <span>Открыть <RightOutlined style={{paddingTop: 1}}/></span>
-                    </div>
-                </div>
+                {/*<div className={cl.open}>*/}
+                {/*    <div className={cl.openSpan}>*/}
+                {/*        <span>Открыть <RightOutlined style={{paddingTop: 1}}/></span>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
             </div>
         </NavLink>
     );
