@@ -1,7 +1,7 @@
 import React from 'react';
-import {Button, Checkbox, Form, Input} from "antd";
+import {Alert, Button, Checkbox, Form, Input} from "antd";
 import MailerApi from "../../api/mailApi";
-
+import cl from "./style.module.css"
 
 type FinishProps = {
     email: string;
@@ -15,16 +15,21 @@ const SubscribePageComponent = () => {
         form.resetFields();
         MailerApi.create(props.email).then(
             (res: any) => {
-
+                setSuccess(true);
                 console.log(res);
             }
         )
     }
 
     return (
-        <div>
+        <div className={cl.cont}>
             <h1>Подписаться на рассылку</h1>
-            <Form
+            {success ?  <Alert
+      message="Вы успешно подписались"
+      description="Спасибо, за подписку!"
+      type="success"
+      showIcon
+    /> : <Form
                 form={form}
                 onFinish={handleFinish}
             >
@@ -55,7 +60,8 @@ const SubscribePageComponent = () => {
                     </Checkbox>
                 </Form.Item>
                 <Button type="primary" htmlType="submit">Отправить</Button>
-            </Form>
+            </Form>}
+
         </div>
     );
 };

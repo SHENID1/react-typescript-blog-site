@@ -10,6 +10,7 @@ import AboutPageComponent from "./components/AboutPage/AboutPageComponent";
 import SubscribePageComponent from "./components/SubscribePage/SubscribePageComponent";
 import PostReaderComponent from "./components/PostReaderPage/PostReaderComponent";
 import PrivacyPolicyPage from "./components/PrivacyPolicyPage/PrivacyPolicyPage";
+import SuccessfulUnsubscriptionPage from "./components/successfulUnsubscription/successfulUnsubscriptionPage";
 
 function App() {
     return (
@@ -24,6 +25,7 @@ function App() {
                     <Route path={"/about"} element={<AboutPageComponent/>}/>
                     <Route path={"/subscribe"} element={<SubscribePageComponent/>}/>
                     <Route path={"/privacy"} element={<PrivacyPolicyPage/>}/>
+                    <Route path={"/successfulUnsubscriptionPage"} element={<SuccessfulUnsubscriptionPage/>}/>
                     <Route path={"*"} element={<Page404/>}/>
                 </Route>
             </Routes>

@@ -2,7 +2,6 @@ import React from 'react';
 import {Link, Outlet} from "react-router-dom";
 import {Layout, Menu, ConfigProvider, Drawer, Space, Button} from "antd";
 import {JavaScriptOutlined, MenuOutlined} from "@ant-design/icons";
-import Footer from "../FooterComponent/Footer";
 import cl from "./style.module.css";
 import {useAppDispatch, useAppSelector} from "../../hooks/redux";
 import AuthService from "../../services/AuthService";
@@ -108,7 +107,7 @@ const AdminLayout: React.FC = () => {
                     <Outlet/>
                 </div>
 
-                <Footer/>
+                {/*<Footer/>*/}
             </Layout>
         </ConfigProvider>
     );

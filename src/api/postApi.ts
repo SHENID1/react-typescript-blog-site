@@ -63,4 +63,21 @@ export default class PostApi {
             throw Error(e.message)
         }
     }
+    static async getBytes() {
+        try {
+            return (await $api.get('/api/bytes')).data;
+        } catch (e) {
+            return e;
+        }
+
+    }
+
+    static async clearBytes() {
+        try {
+            return (await $api.post('/api/bytes')).data;
+        } catch (e) {
+            return e;
+        }
+
+    }
 }
