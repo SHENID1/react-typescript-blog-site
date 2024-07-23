@@ -6,13 +6,15 @@ import cl from "./style.module.css";
 import {useAppDispatch, useAppSelector} from "../../hooks/redux";
 import AuthService from "../../services/AuthService";
 import {userSlice} from "../../store/reducers/UserSlice";
+import Footer from "../FooterComponent/Footer";
 
 
 const NavOption = [
     {key: "1", label: (<Link to="/admin">Главная</Link>)},
     {key: "2", label: (<Link to="posts" className={cl.cw}>Статьи</Link>)},
     {key: "3", label: (<Link to="categories" className={cl.cw}>Категории</Link>)},
-    {key: "4", label: (<Link to="users" className={cl.cw}>Пользователи</Link>)},
+    {key: "4", label: (<Link to="otherInfo" className={cl.cw}>Остальная информация</Link>)},
+    {key: "5", label: (<Link to="certificates" className={cl.cw}>Сертификаты</Link>)},
     // {key: "4", label: (<Link to="contacts">Контакты</Link>)},
     // {key: "5", label: (<Link to="self">О себе</Link>)},
     // {key: "6", label: (<Link to="subscribe">Подписка на новости</Link>)},
@@ -74,7 +76,7 @@ const AdminLayout: React.FC = () => {
                               mode="horizontal"
                               // defaultSelectedKeys={["1"]}
                               items={NavOption}
-                              style={{borderRadius: "5px", width: "378px"}}
+                              style={{borderRadius: "5px", width: "600px"}}
                               className={cl.menuHorizontal}
                         />
                         <MenuOutlined onClick={handleOpenBurgerMenu} className={cl.MenuOutlined}/>
@@ -107,7 +109,7 @@ const AdminLayout: React.FC = () => {
                     <Outlet/>
                 </div>
 
-                {/*<Footer/>*/}
+                <Footer/>
             </Layout>
         </ConfigProvider>
     );

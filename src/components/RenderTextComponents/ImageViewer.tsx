@@ -1,5 +1,5 @@
 import React from 'react';
-import cl from "./style.module.css"
+import cl from "../PostReaderPage/style.module.css"
 import {ApiUrl} from "../../api";
 interface Props {
     name: string;

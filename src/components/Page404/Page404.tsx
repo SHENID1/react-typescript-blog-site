@@ -1,9 +1,12 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
+import cl from "./style.module.css"
 
 const Page404 = () => {
     return (
-        <div>
-            404 Not Found
+        <div className={cl.cont}>
+            <h1>404 <br/>Данной страницы не существует</h1>
+            <NavLink to={`/`}>Главная страница</NavLink>
         </div>
     );
 };

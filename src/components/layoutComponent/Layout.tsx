@@ -9,6 +9,7 @@ import {useAppDispatch, useAppSelector} from "../../hooks/redux";
 import {CategoriesSlice} from "../../store/reducers/CategoriesSlice";
 import {ApiUrl} from "../../api";
 import HeaderService from "../../services/HeaderService";
+import {App} from 'antd';
 
 
 type MenuItem = Required<MenuProps>['items'][number];
@@ -121,6 +122,7 @@ const MyLayout = () => {
 
         const onChangeHandler = (props: any) => {
             setSelected(props.key);
+            window.scrollTo(0, 0);
         }
         useEffect(() => {
                 LoadCategory().then()
@@ -133,88 +135,91 @@ const MyLayout = () => {
         const onClose = () => setOpen(false);
 
         return (
-            <ConfigProvider
-                theme={{
-                    components: {
-                        Menu: {
-                            darkItemSelectedBg: "rgba(18,44,37,0)",
-                            itemSelectedBg: "rgba(2,51,35,0)",
-                            darkItemBg: "#38876e",
-                            itemBg: "rgba(43,101,84,0)",
-                            borderRadius: 10,
-                            horizontalItemSelectedColor: "rgb(23,246,195)",
-                            colorBgElevated: "#38876e",
-                            colorText: "rgb(255,255,255)",
+            <App>
+                <ConfigProvider
+                    theme={{
+                        components: {
+                            Menu: {
+                                darkItemSelectedBg: "rgba(18,44,37,0)",
+                                itemSelectedBg: "rgba(2,51,35,0)",
+                                darkItemBg: "#38876e",
+                                itemBg: "rgba(43,101,84,0)",
+                                borderRadius: 10,
+                                horizontalItemSelectedColor: "rgb(23,246,195)",
+                                colorBgElevated: "#38876e",
+                                colorText: "rgb(255,255,255)",
+                            },
+                            Layout: {
+                                headerBg: "#38876e",
+                                headerPadding: 0,
+                            },
+                            Drawer: {
+                                colorBgElevated: "#2b6554",
+                            }
                         },
-                        Layout: {
-                            headerBg: "#38876e",
-                            headerPadding: 0,
-                        },
-                        Drawer: {
-                            colorBgElevated: "#2b6554",
-                        }
-                    },
-                }}
-            >
+                    }}
+                >
 
 
-                <Layout className={cl.mainL}>
-                    <Layout.Header>
-                        <div className={cl.cont}>
-                            <div className={cl.logoCont}>
-                                <JavaScriptOutlined className={cl.logo}/>
-                            </div>
+                    <Layout className={cl.mainL}>
+                        <Layout.Header>
+                            <div className={cl.cont}>
+                                <div className={cl.logoCont}>
+                                    <JavaScriptOutlined className={cl.logo}/>
+                                </div>
 
-                            <div className={cl.name}>
-                                Все Закупки
-                            </div>
-                            <Menu theme="light"
-                                  mode="horizontal"
-                                  items={NavOption}
-                                  onClick={onChangeHandler}
-                                  selectedKeys={selected}
-                                  style={{borderRadius: "5px", width: "500px"}}
-                                  className={cl.menuHorizontal}
-                            />
-                            <MenuOutlined onClick={handleOpenBurgerMenu} className={cl.MenuOutlined}/>
-                            <Drawer open={open}
-                                    size={"default"}
-                                    placement={"left"}
-                                    onClose={onClose}
-                                    extra={
-                                        <Space>
-                                            Все Закупки
-                                        </Space>}
-                            >
-
+                                <div className={cl.name}>
+                                    Все Закупки
+                                </div>
                                 <Menu theme="light"
-                                      mode="inline"
-                                      items={NavOptionWithCategories}
-                                      selectedKeys={selected}
+                                      mode="horizontal"
+                                      items={NavOption}
                                       onClick={onChangeHandler}
-                                      style={{borderRadius: "5px", width: "100%"}}
-                                      className={cl.menuVertical}
+                                      selectedKeys={selected}
+                                      style={{borderRadius: "5px", width: "500px"}}
+                                      className={cl.menuHorizontal}
                                 />
-                            </Drawer>
+                                <MenuOutlined onClick={handleOpenBurgerMenu} className={cl.MenuOutlined}/>
+                                <Drawer open={open}
+                                        size={"default"}
+                                        placement={"left"}
+                                        onClose={onClose}
+                                        extra={
+                                            <Space>
+                                                Все Закупки
+                                            </Space>}
+                                >
+
+                                    <Menu theme="light"
+                                          mode="inline"
+                                          items={NavOptionWithCategories}
+                                          selectedKeys={selected}
+                                          onClick={onChangeHandler}
+                                          style={{borderRadius: "5px", width: "100%"}}
+                                          className={cl.menuVertical}
+                                    />
+                                </Drawer>
+                            </div>
+                        </Layout.Header>
+                        <div className={cl.main}>
+                            {path.startsWith('/categories/') ? <Menu
+                                style={{width: 256,}}
+                                mode="inline"
+                                selectedKeys={selected}
+                                onClick={onChangeHandler}
+                                items={items}
+                                theme={"dark"}
+                                className={cl.leftMenu}
+                            /> : null}
+
+                            <div className={cl.outlet}>
+                                <Outlet/>
+                            </div>
                         </div>
-                    </Layout.Header>
-                    <div className={cl.main}>
-                        <Menu
-                            style={{width: 256}}
-                            mode="inline"
-                            selectedKeys={selected}
-                            onClick={onChangeHandler}
-                            items={items}
-                            theme={"dark"}
-                            className={cl.leftMenu}
-                        />
-                        <div className={cl.outlet}>
-                            <Outlet/>
-                        </div>
-                    </div>
-                    <Footer/>
-                </Layout>
-            </ConfigProvider>
+                        <Footer/>
+                    </Layout>
+                </ConfigProvider>
+            </App>
         );
     }
 ;

@@ -14,6 +14,7 @@
     display: flex;
     align-items: center;
     padding: 0 20px;
+    /*background-color: #fbfbfb;*/
 }
 .logo {
     font-size: 35px;
@@ -85,7 +86,7 @@
 .btn {
     margin-left: 20px;
 }
-@media (min-width: 956px) {
+@media (min-width: 1322px) {
     .MenuOutlined {
         display: none;
     }
@@ -95,7 +96,7 @@
         display: none;
     }
 }
-@media (max-width: 955px) {
+@media (max-width: 1322px) {
     .menuHorizontal {
         display: none;
     }

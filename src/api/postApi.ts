@@ -11,6 +11,14 @@ export default class PostApi {
             throw Error(e.message)
         }
     }
+    static async sendMailer(data: IPost) {
+        try {
+            const res = await $api.post('api/sendMailer', data);
+            return res.data;
+        } catch (e: any) {
+            throw Error(e.message)
+        }
+    }
 
     static async getPostById(id: string) {
         try {
@@ -46,9 +54,9 @@ export default class PostApi {
             throw Error(e.message)
         }
     }
-    static async getFreePostsByCategoryId(CategoryId: string) {
+    static async getFreePostsByCategoryId(CategoryId: string, count: number) {
         try {
-            const res = await axios.get<IPost[]>(`${ApiUrl}/api/all/categories/${CategoryId}`);
+            const res = await axios.get<IPost[]>(`${ApiUrl}/api/all/categories/${CategoryId}/${count}`);
             return res.data;
         } catch (e: any) {
             throw Error(e.message)

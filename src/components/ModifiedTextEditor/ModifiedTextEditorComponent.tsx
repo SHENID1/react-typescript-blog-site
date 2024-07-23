@@ -4,7 +4,7 @@ import {Button, type GetProp, message, Space, Upload, UploadProps} from "antd";
 import type {UploadFile} from "antd";
 import {ApiUrl} from "../../api";
 import ImageApi from "../../api/imageApi";
-import {MinusSquareOutlined, UploadOutlined} from "@ant-design/icons";
+import {MinusSquareOutlined, PlusOutlined} from "@ant-design/icons";
 import AllTextEditor from "../AdminPanel/AllTextEditor";
 
 
@@ -36,9 +36,10 @@ const getImageDataByName = (name: string) => {
 interface TextEditorComponentProps {
     initialContent?: string[];
     getData?: (arr: string[]) => void;
+    onEdit?: () => void;
 }
 
-const ModifiedTextEditorComponent: FC<TextEditorComponentProps> = ({initialContent, getData}) => {
+const ModifiedTextEditorComponent: FC<TextEditorComponentProps> = ({initialContent, getData, onEdit}) => {
     const [contents, setContents] = useState<string[]>(initialContent ? initialContent : ["htmlText <span></span>"]);
     const [data, setData] = useState<string[]>(initialContent ? initialContent : ["htmlText <span></span>"]);
 
@@ -49,6 +50,7 @@ const ModifiedTextEditorComponent: FC<TextEditorComponentProps> = ({initialConte
     const addImage = () => {
         let newArray = JSON.parse(JSON.stringify(data))
         const a = [...newArray, "image null", "htmlText <span></span>"]
+        if (onEdit) onEdit();
         setData(a);
         setContents(a);
         // console.log("addImage", [...newArray, "image null", "htmlText <span></span>"])
@@ -56,13 +58,14 @@ const ModifiedTextEditorComponent: FC<TextEditorComponentProps> = ({initialConte
     const removeImage = (ind: number) => {
         let newArray = JSON.parse(JSON.stringify(data))
         const a = [...newArray.slice(0, ind), ...newArray.slice(ind + 2)]
+        if (onEdit) onEdit();
         setContents(a);
         setData(a);
         // console.log("removeImage" + data)
     };
     const ChangeHtml = (val: string, ind: number) => {
         let newArray = JSON.parse(JSON.stringify(data))
-
+        if (onEdit) onEdit();
         newArray[ind] = `htmlText ${val}`;
         setData(newArray);
         // SetContents(newArray);
@@ -84,13 +87,26 @@ const ModifiedTextEditorComponent: FC<TextEditorComponentProps> = ({initialConte
         },
         action: `${ApiUrl}/api/image/`,
         maxCount: 1,
-        listType: "picture",
-        onRemove: ImageApi.deleteImage,
+        listType: "picture-card",
+        onRemove: (file) => {
+            ImageApi.deleteImage(file).then(() => {
+                let newArray = JSON.parse(JSON.stringify(data))
+                newArray.forEach((item: string, index: number) => {
+                    if (item.endsWith(file.response)) {
+                        newArray[index] = "image null";
+                    }
+                })
+                if (onEdit) onEdit();
+                setData(newArray);
+                setContents(newArray);
+            })
+        },
     };
     const ImageChangingHandler = (info: any, i: number) => {
         if (info.file.status === 'done') {
             let newArray = JSON.parse(JSON.stringify(data))
             newArray[i] = `image ${info.file.response}`;
+            if (onEdit) onEdit();
             setData(newArray);
             setContents(newArray);
             message.success(`${info.file.name} файл загружен успешно`).then();
@@ -99,6 +115,12 @@ const ModifiedTextEditorComponent: FC<TextEditorComponentProps> = ({initialConte
             message.error(`${info.file.name} файл не загрузился.`).then();
         }
     }
+    const uploadButton = (
+        <button style={{border: 0, background: 'none'}} type="button">
+            <PlusOutlined/>
+            <div style={{marginTop: 8}}>Загрузить</div>
+        </button>
+    );
     return (
         <div className={cl.main}>
             {contents.map((content, index) => {
@@ -107,14 +129,16 @@ const ModifiedTextEditorComponent: FC<TextEditorComponentProps> = ({initialConte
                     defaultValue={content.slice(9)}
                     onChangeHTMLText={(value: string) => ChangeHtml(value, index)} key={index}/>
 
-                return <Space key={index}><Upload {...props} key={index} defaultFileList={getImageDataByName(contentSplit[1])}
-                                                  onChange={(info) => ImageChangingHandler(info, index)}>
-                    <Button icon={<UploadOutlined/>}>Загрузить</Button>
+                return <Space key={index} className={cl.span}><Upload {...props} key={index}
+                                                                      defaultFileList={getImageDataByName(contentSplit[1])}
+                                                                      onChange={(info) => ImageChangingHandler(info, index)}
+                                                                      className={cl.upload}>
+                    {data[index] === "image null" ? uploadButton : null}
                 </Upload>
                     <Button icon={<MinusSquareOutlined/>} onClick={() => removeImage(index)}></Button>
                 </Space>
             })}
-            <Button icon={<UploadOutlined/>} onClick={addImage}>Загрузить новое фото</Button>
+            <Button icon={<PlusOutlined/>} onClick={addImage}>Добавить новое фото</Button>
 
         </div>
     );

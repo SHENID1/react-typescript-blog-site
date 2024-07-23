@@ -6,6 +6,7 @@ export default interface IPost {
     _id?: string;
     title: string;
     categories: Categories;
+    catId?: string;
     urlPreview: string | any[];
     isVisible: boolean;
     content: string[];

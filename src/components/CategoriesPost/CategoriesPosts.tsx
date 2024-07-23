@@ -5,7 +5,8 @@ import {Button, Skeleton} from "antd";
 import CategoriesApi from "../../api/categoriesApi";
 import IPost from "../../models/IPost";
 import cl from "./style.module.css"
-import {RightOutlined, RollbackOutlined} from "@ant-design/icons";
+import {RollbackOutlined} from "@ant-design/icons";
+import PreviewPost from "./PreviewPost";
 
 const CategoriesPosts = () => {
     const {id} = useParams();
@@ -40,17 +41,26 @@ const CategoriesPosts = () => {
             <NavLink to={`/admin/posts/`}>
                 <Button icon={<RollbackOutlined/>}>Вернуться назад</Button>
             </NavLink>
+            <div className={cl.createLink}>
+                <NavLink to={"/admin/posts/create"}>
+                    <Button type="link">
+                        Написать статью
+                    </Button>
+                </NavLink>
+            </div>
             {data.length === 0 ? <h2>Постов не найдено</h2> : <></>}
             <div className={cl.cont}>
-                {data?.map((item) =>
-                <NavLink to={`/admin/posts/${item._id}`} key={item._id}>
-                    <div className={cl.element}>
-                        <div>{item.title}</div>
-                        <div>{item.isVisible ? "Доступен для всех" : "Доступен только админам"}</div>
-                        <div>Открыть <RightOutlined/></div>
-                    </div>
-                </NavLink>
-            )}
+
+                {data.map((item) => <PreviewPost data={item} name={name} key={item._id}/>)}
+                {/*    {data?.map((item) =>*/}
+                {/*    <NavLink to={`/admin/posts/${item._id}`} key={item._id}>*/}
+                {/*        <div className={cl.element}>*/}
+                {/*            <div>{item.title}</div>*/}
+                {/*            <div>{item.isVisible ? "Доступен для всех" : "Доступен только админам"}</div>*/}
+                {/*            <div>Открыть <RightOutlined/></div>*/}
+                {/*        </div>*/}
+                {/*    </NavLink>*/}
+                {/*)}*/}
             </div>
 
         </div>

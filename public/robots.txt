@@ -1,0 +1,9 @@
+User-agent: yandex
+disallow: /admin/*
+disallow: /successfulUnsubscriptionPage
+Sitemap: https://vsezakup.ru/sitemapindex.xml
+
+User-agent: googlebot
+disallow: /admin/*
+disallow: /successfulUnsubscriptionPage
+Sitemap: https://vsezakup.ru/sitemapindex.xml

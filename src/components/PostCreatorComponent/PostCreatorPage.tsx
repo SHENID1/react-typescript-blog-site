@@ -21,7 +21,11 @@ import IPost from "../../models/IPost";
 import {NavLink} from "react-router-dom";
 
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
-
+/* eslint-disable no-template-curly-in-string */
+const validateMessages = {
+    required: '${label} нужно указать!'
+};
+/* eslint-enable no-template-curly-in-string */
 
 const PostCreatorPage = () => {
     const [loading, setLoading] = React.useState<boolean>(true);
@@ -98,13 +102,14 @@ const PostCreatorPage = () => {
                 // style={{minWidth: "max-content", width: 1000}}
                 onFinish={onFinish}
                 name={"post"}
-                initialValues={{isVisible: true}}
+                initialValues={{isVisible: false}}
+                validateMessages={validateMessages}
             >
 
-                <Form.Item label="Заголовок" name={"title"}>
+                <Form.Item label="Заголовок" name={"title"} rules={[{required: true}]}>
                     <Input/>
                 </Form.Item>
-                <Form.Item label="Категория" name={"categories"}>
+                <Form.Item label="Категория" name={"categories"} rules={[{required: true}]}>
                     <Select>
                         {categories.map((item: Categories) => <Select.Option value={item._id}
                                                                              key={item._id}>{item.name}</Select.Option>)}
@@ -114,7 +119,7 @@ const PostCreatorPage = () => {
                     <Switch/>
                 </Form.Item>
                 <Form.Item label="Превью фото" valuePropName="fileList" getValueFromEvent={normFile}
-                           name={"urlPreview"}>
+                           name={"urlPreview"} rules={[{required: true}]}>
                     <Upload {...props}>
                         <Button icon={<UploadOutlined/>}>Загрузить</Button>
                     </Upload>
@@ -123,8 +128,11 @@ const PostCreatorPage = () => {
                     <ModifiedTextEditorComponent getData={handlerData}/>
                 </Form.Item>
 
-                <br/>
+                <div style={{color: "#ff8100", marginBottom: 15}}>Превью контента будет доступно после создания поста<br/>
+                Рекомендуем не включать открытый доступ сразу
+                </div>
                 <Button type="primary" size="large" htmlType="submit" className={cl.submitButton}>Создать</Button>
+
             </Form>
 
         </div>

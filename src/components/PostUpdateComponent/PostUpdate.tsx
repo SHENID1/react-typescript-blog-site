@@ -9,7 +9,7 @@ import {
     Skeleton,
     message, Button, Switch, DatePicker, Space
 } from "antd";
-import {RollbackOutlined, UploadOutlined} from "@ant-design/icons";
+import {LinkOutlined, RollbackOutlined, SendOutlined, UploadOutlined} from "@ant-design/icons";
 import dayjs from "dayjs"
 import Categories from "../../models/categories";
 import CategoriesApi from "../../api/categoriesApi";
@@ -31,6 +31,12 @@ const getImageData = (data: IPost) => {
         thumbUrl: `${ApiUrl}/${data?.urlPreview}`,
     }]
 }
+/* eslint-disable no-template-curly-in-string */
+const validateMessages = {
+    required: '${label} нужно указать!'
+};
+/* eslint-enable no-template-curly-in-string */
+
 const PostUpdate = () => {
     const [loading, setLoading] = React.useState<boolean>(true);
     const [data, setData] = useState<string[]>(["htmlText <span></span>"]);
@@ -38,7 +44,8 @@ const PostUpdate = () => {
     const {id} = useParams();
     const [categories, setCategories] = React.useState<Categories[]>([])
     const [messageApi, contextHolder] = message.useMessage();
-
+    const [form] = Form.useForm()
+    const [isEdit, setIsEdit] = React.useState<boolean>(false);
     const success = () => {
         messageApi.open({
             type: 'success',
@@ -55,11 +62,12 @@ const PostUpdate = () => {
 
 
     const LoadData = async () => {
-        if (!id) throw new Error("id must be provided");
+        if (!id) return;
         const cat = await CategoriesApi.getAllCategories()
         const FilteredCategories = cat.filter((a) => a._id !== "all")
         const initV = await PostApi.getPostById(id);
         initV.urlPreview = getImageData(initV)
+        initV.catId = initV.categories._id
         initV.dateCreated = dayjs(initV.dateCreated)
         setCategories(FilteredCategories);
         setInitialValues(initV)
@@ -68,7 +76,7 @@ const PostUpdate = () => {
 
 
     const normFile = (e: any) => {
-        console.log(e)
+        // console.log(e)
         if (Array.isArray(e)) {
             return e;
         }
@@ -113,11 +121,26 @@ const PostUpdate = () => {
         values.urlPreview = values.urlPreview[0].response;
         if (!values.urlPreview) values.urlPreview = initialValues?.urlPreview[0].name;
         values.dateCreated = values.dateCreated.toDate()
+        values.categories = values.catId;
         values.content = data
         // console.log(values);
-        PostApi.updatePost(values).then(() => success()).catch(() => error())
+        PostApi.updatePost(values).then(() => {
+            success();
+            setIsEdit(false);
+        }).catch(() => error())
     }
     const handlerData = (arr: string[]) => setData(arr);
+    const handleMailerStart = () => {
+        let values = form.getFieldsValue();
+        values.urlPreview = values.urlPreview[0].response;
+        if (!values.urlPreview) values.urlPreview = initialValues?.urlPreview[0].name;
+        values.dateCreated = values.dateCreated.toDate()
+        values.content = data
+        // console.log(values)
+        PostApi.sendMailer(values).then(() => {
+            success()
+        }).catch(() => error())
+    }
     const handlerDelete = () => {
         if (!id) return
         PostApi.DeletePost(id).then(() => {
@@ -130,17 +153,35 @@ const PostUpdate = () => {
         <div>
             {contextHolder}
             <h1>Обновить информацию о статье</h1>
-            <NavLink to={`/admin/categories/categoryPosts/${initialValues?.categories}`}>
-                <Button icon={<RollbackOutlined/>}>Вернуться назад</Button>
-            </NavLink>
+            <div className={cl.cc}>
+                {isEdit ? <span className={cl.text}>
+                    Чтобы запустить рассылку, не забудьте сохранить изменения<br/>
+                    Для сброса изменений, перезагрузите страницу
+                </span> : null}
+                <NavLink to={`/admin/categories/categoryPosts/${initialValues?.categories._id}`} className={cl.ff}>
+                    <Button icon={<RollbackOutlined/>} disabled={isEdit}>Вернуться назад</Button>
+                </NavLink>
+                <Button icon={<SendOutlined/>} onClick={handleMailerStart} className={cl.ff} disabled={isEdit}>Запустить
+                    рассылку</Button>
+                <NavLink to={`/post/${initialValues?._id}`} className={cl.ff} target={"_blank"}>
+                    <Button icon={<LinkOutlined/>} disabled={isEdit}>Открыть пост</Button>
+                </NavLink>
+                <NavLink to={`/admin/preview/posts/${initialValues?._id}`} className={cl.ff} target={"_blank"}>
+                    <Button icon={<LinkOutlined/>} disabled={isEdit}>Превью</Button>
+                </NavLink>
+            </div>
+
 
             <Form
                 labelCol={{span: 4}}
                 wrapperCol={{span: 14}}
                 layout="horizontal"
                 // style={{maxWidth: "100vw"}}
+                form={form}
                 onFinish={onFinish}
+                onChange={() => setIsEdit(true)}
                 name={"post"}
+                validateMessages={validateMessages}
                 initialValues={initialValues ? initialValues : undefined}
             >
                 <Form.Item label="ID" name={"_id"} rules={[{required: true}]}>
@@ -149,8 +190,8 @@ const PostUpdate = () => {
                 <Form.Item label="Заголовок" name={"title"} rules={[{required: true}]}>
                     <Input/>
                 </Form.Item>
-                <Form.Item label="Категория" name={"categories"} rules={[{required: true}]}>
-                    <Select>
+                <Form.Item label="Категория" name={"catId"} rules={[{required: true}]}>
+                    <Select onSelect={() => setIsEdit(true)}>
                         {categories.map((item: Categories) => <Select.Option value={item._id}
                                                                              key={item._id}>{item.name}</Select.Option>)}
                     </Select>
@@ -160,7 +201,7 @@ const PostUpdate = () => {
                 </Form.Item>
                 <Form.Item label="Открытый доступ" valuePropName="checked" name={"isVisible"}
                            rules={[{required: true}]}>
-                    <Switch/>
+                    <Switch onClick={() => setIsEdit(true)}/>
                 </Form.Item>
                 <Form.Item label="Превью фото" valuePropName="fileList" getValueFromEvent={normFile}
                            name={"urlPreview"} rules={[{required: true}]}>
@@ -169,12 +210,14 @@ const PostUpdate = () => {
                     </Upload>
                 </Form.Item>
                 <Form.Item label="Контент" name={"content"} rules={[{required: true}]}>
-                    <ModifiedTextEditorComponent getData={handlerData} initialContent={initialValues?.content}/>
+                    <ModifiedTextEditorComponent getData={handlerData} initialContent={initialValues?.content}
+                                                 onEdit={() => setIsEdit(true)}/>
                 </Form.Item>
 
                 <br/>
                 <Space>
-                    <Button type="primary" size="large" htmlType="submit" className={cl.submitButton}>Сохранить</Button>
+                    <Button type="primary" size="large" htmlType="submit" className={cl.submitButton}
+                            disabled={!isEdit}>Сохранить</Button>
                     <Button type="primary" size="large" danger className={cl.submitButton}
                             onClick={handlerDelete}>Удалить</Button>
                 </Space>

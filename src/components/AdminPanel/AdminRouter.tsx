@@ -16,6 +16,10 @@ import PostMainAdmin from "../PostMainAdminPage/PostMainAdmin";
 import PostCreatorPage from "../PostCreatorComponent/PostCreatorPage";
 import PostUpdate from "../PostUpdateComponent/PostUpdate";
 import CategoriesPosts from "../CategoriesPost/CategoriesPosts";
+import PostReaderComponent from "../PostReaderPage/PostReaderComponent";
+import AdminOtherInfoMainComponent from "../AdminOtherInfoMain/AdminOtherInfoMainComponent";
+import OtherInfoUpdate from "../OtherInfoUpdatePage/OtherInfoUpdate";
+import CertificatesDashboard from "../certificatesDashboardPage/certificatesDashboard";
 
 const AdminRouter: React.FC = () => {
     const dispatch = useAppDispatch()
@@ -77,11 +81,15 @@ const AdminRouter: React.FC = () => {
             <Route path="/" element={<AdminLayout/>}>
                 <Route index element={<MainAdmin/>}/>
                 <Route path={"/categories"} element={<CategoriesDashboardComponent/>}/>
+                <Route path={"/otherInfo"} element={<AdminOtherInfoMainComponent/>}/>
+                <Route path={"/certificates"} element={<CertificatesDashboard/>}/>
+                <Route path={"/otherInfo/:name"} element={<OtherInfoUpdate/>}/>
                 <Route path={"/categories/categoryPosts/:id"} element={<CategoriesPosts />}/>
                 <Route path={"/posts"} element={<PostMainAdmin/>}/>
                 <Route path={"/posts/create"} element={<PostCreatorPage/>}/>
                 <Route path={"*"} element={<Page404/>}/>
                 <Route path="/posts/:id" element={<PostUpdate />}/>
+                <Route path="/preview/posts/:id" element={<PostReaderComponent root={true} />}/>
             </Route>
         </Routes>
     );
