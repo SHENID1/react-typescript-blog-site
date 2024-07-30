@@ -133,7 +133,7 @@ const ModifiedTextEditorComponent: FC<TextEditorComponentProps> = ({initialConte
                                                                       defaultFileList={getImageDataByName(contentSplit[1])}
                                                                       onChange={(info) => ImageChangingHandler(info, index)}
                                                                       className={cl.upload}>
-                    {data[index] === "image null" ? uploadButton : null}
+                    {uploadButton}
                 </Upload>
                     <Button icon={<MinusSquareOutlined/>} onClick={() => removeImage(index)}></Button>
                 </Space>
