@@ -122,6 +122,7 @@ const MyLayout = () => {
 
         const onChangeHandler = (props: any) => {
             setSelected(props.key);
+            setOpen(false);
             window.scrollTo(0, 0);
         }
         useEffect(() => {
