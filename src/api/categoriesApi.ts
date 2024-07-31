@@ -46,6 +46,11 @@ export default class CategoriesApi {
     }static async getCatById(id: string) {
         try {
             const res = await $api.get<Categories>(`/api/categories/${id}`);
+            if (!res.data) return {
+                name: "Не найдено",
+                _id: "-1",
+                count: 0,
+            } as Categories
             return res.data;
         } catch (e: any) {
             throw Error(e.message)

@@ -39,6 +39,13 @@ const PostReaderComponent: FC<State> = ({root}) => {
             }).catch(() => setError(true))
         } else {
             PostApi.getFreePostById(id).then(r => {
+                if (!r.categories) {
+                    r.categories = {
+                        name: "Не найдено",
+                        _id: "-1",
+                        count: 0,
+                    };
+                }
                 setData(r);
                 setLoading(false);
             }).catch(() => setError(true))

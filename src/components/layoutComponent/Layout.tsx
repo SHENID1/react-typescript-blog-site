@@ -37,7 +37,7 @@ const MyLayout = () => {
                         key: `settings:loading`,
                         disabled: true,
                     } : null,
-                    ...CatList.slice(1)?.map((cat, index) => {
+                    ...CatList.slice(1)?.map((cat, ) => {
                         return {
                             label: <Link to={`/categories/${cat._id}`} className={cl.cb}>{cat.name}</Link>,
                             key: `settings:${cat._id}`,
@@ -67,7 +67,7 @@ const MyLayout = () => {
                     type: 'group',
                     label: <span className={cl.cw}>Категории:</span>,
                     children: [
-                        ...CatList?.map((cat, index) => {
+                        ...CatList?.map((cat, ) => {
                             return {
                                 label: <Link to={`/categories/${cat._id}`} className={cl.cb}>{cat.name}</Link>,
                                 key: `settings:${cat._id}`,
@@ -164,13 +164,17 @@ const MyLayout = () => {
                     <Layout className={cl.mainL}>
                         <Layout.Header>
                             <div className={cl.cont}>
-                                <div className={cl.logoCont}>
-                                    <JavaScriptOutlined className={cl.logo}/>
-                                </div>
+                                <Link to="/" onClick={()=>onChangeHandler({key: "1"})}>
+                                    <div className={cl.LogoName}>
+                                        <div className={cl.logoCont}>
+                                            <JavaScriptOutlined className={cl.logo}/>
+                                        </div>
 
-                                <div className={cl.name}>
-                                    Все Закупки
-                                </div>
+                                        <div className={cl.name}>
+                                            Все Закупки
+                                        </div>
+                                    </div>
+                                </Link>
                                 <Menu theme="light"
                                       mode="horizontal"
                                       items={NavOption}

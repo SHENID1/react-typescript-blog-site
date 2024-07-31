@@ -68,6 +68,11 @@
     color: #000000;
 }
 
+.LogoName {
+    display: flex;
+    justify-content: flex-start;
+}
+
 .mainL {
     display: flex;
     flex-direction: column;

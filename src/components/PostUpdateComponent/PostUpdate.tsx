@@ -66,6 +66,14 @@ const PostUpdate = () => {
         const cat = await CategoriesApi.getAllCategories()
         const FilteredCategories = cat.filter((a) => a._id !== "all")
         const initV = await PostApi.getPostById(id);
+        // console.log(initV);
+        if (!initV.categories) {
+            initV.categories = {
+                name: "Не найдено",
+                _id: "-1",
+                count: 0,
+            };
+        }
         initV.urlPreview = getImageData(initV)
         initV.catId = initV.categories._id
         initV.dateCreated = dayjs(initV.dateCreated)
