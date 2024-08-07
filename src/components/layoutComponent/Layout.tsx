@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {Link, Outlet} from "react-router-dom";
 import {Layout, Menu, ConfigProvider, Drawer, Space, MenuProps} from "antd";
-import {JavaScriptOutlined, MenuOutlined} from "@ant-design/icons";
+import {MenuOutlined} from "@ant-design/icons";
 import Footer from "../FooterComponent/Footer";
 import cl from "./style.module.css";
 import CategoriesApi from "../../api/categoriesApi";
@@ -10,6 +10,7 @@ import {CategoriesSlice} from "../../store/reducers/CategoriesSlice";
 import {ApiUrl} from "../../api";
 import HeaderService from "../../services/HeaderService";
 import {App} from 'antd';
+import logoImage from "../../assets/logo-white.svg";
 
 
 type MenuItem = Required<MenuProps>['items'][number];
@@ -52,8 +53,6 @@ const MyLayout = () => {
             {
                 key: "settings:all", label: (<Link to="/categories/all" className={cl.cw}>Статьи</Link>),
             },
-
-
             {key: "3", label: (<Link to="contacts">Контакты</Link>)},
             {key: "4", label: (<Link to="about">О себе</Link>)},
             {key: "5", label: (<Link to="subscribe">Подписка на новости</Link>)},
@@ -165,15 +164,9 @@ const MyLayout = () => {
                     <Layout className={cl.mainL}>
                         <Layout.Header>
                             <div className={cl.cont}>
-                                <Link to="/" onClick={()=>onChangeHandler({key: "1"})}>
+                                <Link to="/" onClick={()=>onChangeHandler({key: "1"})} className={cl.link}>
                                     <div className={cl.LogoName}>
-                                        <div className={cl.logoCont}>
-                                            <JavaScriptOutlined className={cl.logo}/>
-                                        </div>
-
-                                        <div className={cl.name}>
-                                            Все Закупки
-                                        </div>
+                                        <img src={logoImage} alt="" className={cl.logo}/>
                                     </div>
                                 </Link>
                                 <Menu theme="light"

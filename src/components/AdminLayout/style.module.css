@@ -14,21 +14,19 @@
     display: flex;
     align-items: center;
     padding: 0 20px;
+    justify-content: flex-start;
     /*background-color: #fbfbfb;*/
 }
 .logo {
-    font-size: 35px;
+    height: 57px;
+    width: auto;
     color: white;
-
 }
 .logoCont {
-    background-color: rgba(14,46,33,0.74);
-    border-radius: 15px;
     margin-right: 10px;
-    width: 64px;
+    width: auto;
     height: 64px;
     display: flex;
-    justify-content: center;
     align-items: center;
 }
 .cw {

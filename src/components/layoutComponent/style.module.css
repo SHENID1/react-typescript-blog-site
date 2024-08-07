@@ -33,10 +33,12 @@
     display: flex;
     align-items: center;
     padding: 0 20px;
+    justify-content: flex-start;
 }
 
 .logo {
-    font-size: 35px;
+    height: 57px;
+    width: auto;
     color: white;
 
 }
@@ -68,9 +70,14 @@
     color: #000000;
 }
 
+.link {
+    margin-right: 20px;
+}
 .LogoName {
     display: flex;
     justify-content: flex-start;
+    align-items: center;
+
 }
 
 .mainL {
@@ -130,6 +137,7 @@
 
     .cont {
         justify-content: space-between;
+        height: 64px;
     }
 
     .leftMenu {

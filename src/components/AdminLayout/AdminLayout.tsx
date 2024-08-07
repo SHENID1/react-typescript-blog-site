@@ -1,12 +1,13 @@
 import React from 'react';
 import {Link, Outlet} from "react-router-dom";
 import {Layout, Menu, ConfigProvider, Drawer, Space, Button} from "antd";
-import {JavaScriptOutlined, MenuOutlined} from "@ant-design/icons";
+import {MenuOutlined} from "@ant-design/icons";
 import cl from "./style.module.css";
 import {useAppDispatch, useAppSelector} from "../../hooks/redux";
 import AuthService from "../../services/AuthService";
 import {userSlice} from "../../store/reducers/UserSlice";
 import Footer from "../FooterComponent/Footer";
+import logoImage from "../../assets/logo-white.svg";
 
 
 const NavOption = [
@@ -66,15 +67,11 @@ const AdminLayout: React.FC = () => {
                 <Layout.Header>
                     <div className={cl.cont}>
                         <div className={cl.logoCont}>
-                            <JavaScriptOutlined className={cl.logo}/>
-                        </div>
-
-                        <div className={cl.name}>
-                            Все Закупки
+                            <img src={logoImage} alt="" className={cl.logo}/>
                         </div>
                         <Menu theme="light"
                               mode="horizontal"
-                              // defaultSelectedKeys={["1"]}
+                            // defaultSelectedKeys={["1"]}
                               items={NavOption}
                               style={{borderRadius: "5px", width: "600px"}}
                               className={cl.menuHorizontal}
