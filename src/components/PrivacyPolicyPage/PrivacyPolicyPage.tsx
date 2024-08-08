@@ -29,7 +29,7 @@ const PrivacyPolicyPage = () => {
         <div className={cl.cc}>
             <Helmet>
                 <title>Политика конфиденциальности</title>
-                <meta name="Политика конфиденциальности"
+                <meta name="description"
                       content={content}/>
             </Helmet>
             <div className={cl.cont}>

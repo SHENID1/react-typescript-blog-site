@@ -28,7 +28,7 @@ const ContactsPageComponent = () => {
         <div className={cl.cc}>
             <Helmet>
                 <title>Все Закупки - Контакты</title>
-                <meta name="Контакты"
+                <meta name="description"
                       content={content}/>
             </Helmet>
             <h1>Контакты</h1>

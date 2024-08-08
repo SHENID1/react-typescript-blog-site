@@ -8,7 +8,7 @@ const MainPage = () => {
         <div>
             <Helmet>
                 <title>Все Закупки</title>
-                <meta name="Все Закупки - Главная страница"
+                <meta name="description"
                       content="Все статьи"/>
             </Helmet>
 

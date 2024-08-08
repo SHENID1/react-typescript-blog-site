@@ -27,7 +27,7 @@ const SubscribePageComponent = () => {
             <h1>Подписаться на рассылку</h1>
             <Helmet>
                 <title>Все Закупки - Подписаться на рассылку</title>
-                <meta name="Подписаться на рассылку"
+                <meta name="description"
                       content="Подпишитесь на рассылку, чтобы не получать уведомления о выходе новых постов"/>
             </Helmet>
             {success ? <Alert

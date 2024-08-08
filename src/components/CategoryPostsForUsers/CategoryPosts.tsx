@@ -72,7 +72,7 @@ const CategoryPosts: FC<Props> = ({propsId}) => {
         <div className={cl.container}>
             <Helmet>
                 <title>Все Закупки - {name === "ВСЕ" ? `Все статьи` : `Статьи для категории ${name}`}</title>
-                <meta name="Статьи"
+                <meta name="description"
                       content="Статьи по категориям"/>
             </Helmet>
             {!propsId ? <Breadcrumb

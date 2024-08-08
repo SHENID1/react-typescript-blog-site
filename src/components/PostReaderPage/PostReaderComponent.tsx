@@ -68,7 +68,7 @@ const PostReaderComponent: FC<State> = ({root}) => {
         <div className={cl.wr}>
             <Helmet>
                 <title>Все Закупки - {data?.title}</title>
-                <meta name={data?.categories.name}
+                <meta name="description"
                       content={content}/>
             </Helmet>
             <div className={cl.cont}>

@@ -34,7 +34,7 @@ const AboutPageComponent = () => {
         <div className={cl.cc}>
             <Helmet>
                 <title>Все Закупки - О себе</title>
-                <meta name="О себе"
+                <meta name="description"
                       content={content}/>
             </Helmet>
             <h1>О себе</h1>
@@ -42,7 +42,7 @@ const AboutPageComponent = () => {
                 <RenderText content={data?.content}/>
                 <h2>Сертификаты</h2>
                 <div className={cl.wr}>
-                    {certList.map((item, i) => <a key={item._id} href={`${ApiUrl}/${item.name}`} target={"_blank"} rel="noreferrer">
+                    {certList.map((item) => <a key={item._id} href={`${ApiUrl}/${item.name}`} target={"_blank"} rel="noreferrer">
                             <div>{item.name}
 
                             </div>
