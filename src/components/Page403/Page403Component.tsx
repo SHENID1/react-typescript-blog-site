@@ -4,6 +4,7 @@ import {userSlice} from "../../store/reducers/UserSlice";
 import AuthService from "../../services/AuthService";
 import {useAppDispatch} from "../../hooks/redux";
 import {Button, ConfigProvider} from "antd";
+import MetaComponent from "../../seo/metaComponent";
 
 const Page403Component = () => {
     document.title = "403 Error";
@@ -24,6 +25,8 @@ const Page403Component = () => {
                 },
             }}
         >
+            <MetaComponent title={"403"} description={"Нет доступа"}/>
+
             <div className={cl.cont}>
                 <h1>У вас нет доступа к этой странице</h1>
                 <Button onClick={logout_handler} className={cl.btn}>Выйти</Button>

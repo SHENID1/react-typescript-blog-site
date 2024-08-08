@@ -1,17 +1,12 @@
 import React from 'react';
 import CategoryPosts from "../CategoryPostsForUsers/CategoryPosts";
-import {Helmet} from "react-helmet";
+import MetaComponent from "../../seo/metaComponent";
 
 
 const MainPage = () => {
     return (
         <div>
-            <Helmet>
-                <title>Все Закупки</title>
-                <meta name="description"
-                      content="Все статьи"/>
-            </Helmet>
-
+            <MetaComponent title={"Главная"} description={"Главная страница"}/>
             <CategoryPosts propsId={"all"}/>
         </div>
     );

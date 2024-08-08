@@ -11,9 +11,10 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import Page404 from "../Page404/Page404";
 import {RollbackOutlined} from "@ant-design/icons";
 import RenderText from "../RenderTextComponents/RenderText";
-import {Helmet} from "react-helmet";
 import DOMPurify from "dompurify";
 import HtmlService from "../../services/HtmlService";
+import MetaComponent from "../../seo/metaComponent";
+import {ApiUrl} from "../../api";
 
 
 dayjs.extend(relativeTime);
@@ -66,11 +67,7 @@ const PostReaderComponent: FC<State> = ({root}) => {
     const dateSting = date.format("DD.MM.YYYY");
     return (
         <div className={cl.wr}>
-            <Helmet>
-                <title>Все Закупки - {data?.title}</title>
-                <meta name="description"
-                      content={content}/>
-            </Helmet>
+            <MetaComponent title={data?.title} description={content} imageUrl={ApiUrl + "/" + data?.urlPreview}/>
             <div className={cl.cont}>
                 <Breadcrumb
                     items={[

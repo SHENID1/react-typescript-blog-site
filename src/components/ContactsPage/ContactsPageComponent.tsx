@@ -4,9 +4,9 @@ import OtherInfoApi from "../../api/otherInfoApi";
 import IOtherInfo from "../../models/IOtherInfo";
 import RenderText from "../RenderTextComponents/RenderText";
 import cl from "./style.module.css"
-import {Helmet} from "react-helmet";
 import DOMPurify from "dompurify";
 import HtmlService from "../../services/HtmlService";
+import MetaComponent from "../../seo/metaComponent";
 
 const ContactsPageComponent = () => {
     const [loading, setLoading] = React.useState<boolean>(true);
@@ -26,11 +26,8 @@ const ContactsPageComponent = () => {
 
     return (
         <div className={cl.cc}>
-            <Helmet>
-                <title>Все Закупки - Контакты</title>
-                <meta name="description"
-                      content={content}/>
-            </Helmet>
+            <MetaComponent title={"Контакты"} description={content}/>
+
             <h1>Контакты</h1>
             <div className={cl.cont}>
                 <RenderText content={data?.content}/>

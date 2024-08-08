@@ -4,9 +4,9 @@ import IOtherInfo from "../../models/IOtherInfo";
 import OtherInfoApi from "../../api/otherInfoApi";
 import {Skeleton} from "antd";
 import RenderText from "../RenderTextComponents/RenderText";
-import {Helmet} from "react-helmet";
 import DOMPurify from "dompurify";
 import HtmlService from "../../services/HtmlService";
+import MetaComponent from "../../seo/metaComponent";
 
 const PrivacyPolicyPage = () => {
     const [loading, setLoading] = React.useState<boolean>(true);
@@ -27,13 +27,10 @@ const PrivacyPolicyPage = () => {
     if (loading) return <><h1>Политика конфиденциальности</h1><Skeleton active/></>
     return (
         <div className={cl.cc}>
-            <Helmet>
-                <title>Политика конфиденциальности</title>
-                <meta name="description"
-                      content={content}/>
-            </Helmet>
+            <MetaComponent title={"Политика конфиденциальности"} description={content}/>
+
             <div className={cl.cont}>
-                <RenderText content={data?.content} />
+                <RenderText content={data?.content}/>
             </div>
         </div>
     );

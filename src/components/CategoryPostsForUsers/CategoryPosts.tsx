@@ -7,7 +7,7 @@ import PreviewPost from "./PreviewPost";
 import cl from "./style.module.css"
 import CategoriesApi from "../../api/categoriesApi";
 import {MoreOutlined} from "@ant-design/icons";
-import {Helmet} from "react-helmet";
+import MetaComponent from "../../seo/metaComponent";
 
 interface Props {
     propsId?: string;
@@ -70,12 +70,8 @@ const CategoryPosts: FC<Props> = ({propsId}) => {
     if (!id) return null;
     return (
         <div className={cl.container}>
-            <Helmet>
-                <title>Все Закупки - {name === "ВСЕ" ? `Все статьи` : `Статьи для категории ${name}`}</title>
-                <meta name="description"
-                      content="Статьи по категориям"/>
-            </Helmet>
-            {!propsId ? <Breadcrumb
+
+            {!propsId ? <><Breadcrumb
                 items={[
                     {
                         title: <NavLink to={`/`}>Главная</NavLink>,
@@ -87,7 +83,11 @@ const CategoryPosts: FC<Props> = ({propsId}) => {
                         title: name,
                     },
                 ]}
-            /> : null}
+            />
+                <MetaComponent title={name === "ВСЕ" ? `Все статьи` : `Статьи для категории ${name}`}
+                               description={"Статьи по категориям"}/>
+
+            </> : null}
             <h1>{name === "ВСЕ" ? `Все статьи` : `Статьи для категории ${name}`}</h1>
 
             {data.map((item) => <PreviewPost data={item} name={name} key={item._id}/>)}

@@ -2,7 +2,7 @@ import React from 'react';
 import {Alert, Button, Checkbox, Form, Input} from "antd";
 import MailerApi from "../../api/mailApi";
 import cl from "./style.module.css"
-import {Helmet} from "react-helmet";
+import MetaComponent from "../../seo/metaComponent";
 
 type FinishProps = {
     email: string;
@@ -25,11 +25,9 @@ const SubscribePageComponent = () => {
     return (
         <div className={cl.cont}>
             <h1>Подписаться на рассылку</h1>
-            <Helmet>
-                <title>Все Закупки - Подписаться на рассылку</title>
-                <meta name="description"
-                      content="Подпишитесь на рассылку, чтобы не получать уведомления о выходе новых постов"/>
-            </Helmet>
+            <MetaComponent title={"Подписаться на рассылку"}
+                           description="Подпишитесь на рассылку, чтобы не получать уведомления о выходе новых постов"/>
+
             {success ? <Alert
                 message="Вы успешно подписались"
                 description="Спасибо, за подписку!"

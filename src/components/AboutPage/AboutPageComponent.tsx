@@ -6,9 +6,9 @@ import RenderText from "../RenderTextComponents/RenderText";
 import cl from "./style.module.css"
 import ICert from "../../models/ICert";
 import {ApiUrl} from "../../api";
-import {Helmet} from "react-helmet";
 import DOMPurify from "dompurify";
 import HtmlService from "../../services/HtmlService";
+import MetaComponent from "../../seo/metaComponent";
 
 const AboutPageComponent = () => {
     const [loading, setLoading] = React.useState<boolean>(true);
@@ -32,17 +32,15 @@ const AboutPageComponent = () => {
     if (loading) return <><h1>О себе</h1><Skeleton active/></>
     return (
         <div className={cl.cc}>
-            <Helmet>
-                <title>Все Закупки - О себе</title>
-                <meta name="description"
-                      content={content}/>
-            </Helmet>
+            <MetaComponent title={"О себе"} description={content}/>
+
             <h1>О себе</h1>
             <div className={cl.cont}>
                 <RenderText content={data?.content}/>
                 <h2>Сертификаты</h2>
                 <div className={cl.wr}>
-                    {certList.map((item) => <a key={item._id} href={`${ApiUrl}/${item.name}`} target={"_blank"} rel="noreferrer">
+                    {certList.map((item) => <a key={item._id} href={`${ApiUrl}/${item.name}`} target={"_blank"}
+                                               rel="noreferrer">
                             <div>{item.name}
 
                             </div>
