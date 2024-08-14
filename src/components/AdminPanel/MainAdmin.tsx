@@ -40,7 +40,7 @@ const MainAdmin = () => {
             Ваши роли: {user?.roles.join(", ")}.<br/>
             <h2>Кол-во оформленных подписку - {countUsers}</h2>
             <div>
-                {userList.map((item, index) => (<div>
+                {userList.map((item, index) => (<div key={item._id}>
                     <b>{index + 1}.</b> <span>{item.email}</span> <a href={ApiUrl + "/mail/remove/" + item._id}>Ссылка для
                     отписки</a>
                 </div>))}

@@ -64,6 +64,7 @@ const ModifiedTextEditorComponent: FC<TextEditorComponentProps> = ({initialConte
         // console.log("removeImage" + data)
     };
     const ChangeHtml = (val: string, ind: number) => {
+        console.log(val);
         let newArray = JSON.parse(JSON.stringify(data))
         if (onEdit) onEdit();
         newArray[ind] = `htmlText ${val}`;
@@ -125,18 +126,19 @@ const ModifiedTextEditorComponent: FC<TextEditorComponentProps> = ({initialConte
         <div className={cl.main}>
             {contents.map((content, index) => {
                 const contentSplit = content.split(" ");
-                if (contentSplit[0] === "htmlText") return <AllTextEditor
-                    defaultValue={content.slice(9)}
-                    onChangeHTMLText={(value: string) => ChangeHtml(value, index)} key={index}/>
 
-                return <Space key={index} className={cl.span}><Upload {...props} key={index}
+                if (contentSplit[0] === "htmlText") return (<AllTextEditor
+                    defaultValue={content.slice(9)}
+                    onChangeHTMLText={(value: string) => ChangeHtml(value, index)} key={index}/>);
+
+                return (<Space key={index} className={cl.span}><Upload {...props} key={index}
                                                                       defaultFileList={getImageDataByName(contentSplit[1])}
                                                                       onChange={(info) => ImageChangingHandler(info, index)}
                                                                       className={cl.upload}>
                     {uploadButton}
                 </Upload>
                     <Button icon={<MinusSquareOutlined/>} onClick={() => removeImage(index)}></Button>
-                </Space>
+                </Space>);
             })}
             <Button icon={<PlusOutlined/>} onClick={addImage}>Добавить новое фото</Button>
 

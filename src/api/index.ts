@@ -1,7 +1,7 @@
 import axios from "axios";
 
-export const ApiUrl = "https://api.vsezakup.ru";
-// export const ApiUrl = window.location.origin.slice(0, -5) + ":5000";
+// export const ApiUrl = "https://api.vsezakup.ru";
+export const ApiUrl = window.location.origin.slice(0, -5) + ":5000";
 
 
 const $api = axios.create({

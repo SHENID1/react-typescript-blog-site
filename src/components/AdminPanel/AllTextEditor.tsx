@@ -30,6 +30,8 @@ const AllTextEditor: FC<TProps> = ({onChangeHTMLText, defaultValue}) => {
     const [editorState, setEditorState] = useState(defaultValue ? EditorState.createWithContent(content) : EditorState.createEmpty());
     // const [text, setText] = useState();
     const onEditorStateChange = function (editorState: typeof EditorState) {
+
+        editorState.firstChild = <p></p>
         setEditorState(editorState);
         // const {blocks} = convertToRaw(editorState.getCurrentContent());
         /*let text = blocks.reduce((acc, item) => {
